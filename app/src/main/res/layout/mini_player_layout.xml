@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/mini_album_art"
+        android:src="@drawable/loading"
+        />
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mini_song_progess"
+        android:layout_marginTop="-7dp"
+        android:layout_toRightOf="@id/mini_album_art"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="7dp"
+        android:scaleType="fitXY"
+        android:id="@+id/mini_next_btn"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/skip_next_white_24dp"
+        android:layout_alignParentRight="true"
+        />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="7dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/pause_white_24dp"
+        android:id="@+id/mini_pause_btn"
+        android:layout_toLeftOf="@id/mini_next_btn"
+        android:background="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="7dp"
+        android:scaleType="fitXY"
+        android:id="@+id/mini_prev_btn"
+        android:src="@drawable/skip_previous_white_24dp"
+        android:background="@android:color/transparent"
+        android:layout_toLeftOf="@id/mini_pause_btn"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mini_song_title"
+        android:layout_margin="5dp"
+        android:textColor="#FFF"
+        android:maxLines="1"
+        android:layout_toRightOf="@id/mini_album_art"
+        android:layout_toLeftOf="@id/mini_prev_btn"
+        android:text="Song Name"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mini_song_artist"
+        android:textSize="13sp"
+        android:layout_marginLeft="5dp"
+        android:maxLines="1"
+        android:textColor="@android:color/tertiary_text_light"
+        android:layout_toRightOf="@id/mini_album_art"
+        android:layout_toLeftOf="@id/mini_prev_btn"
+        android:layout_below="@id/mini_song_title"
+        android:text="Song Artist"
+        />
+
+
+</RelativeLayout>
