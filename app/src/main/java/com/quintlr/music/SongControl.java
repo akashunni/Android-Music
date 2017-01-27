@@ -19,6 +19,7 @@ class SongControl implements MediaPlayer.OnCompletionListener {
     static SongControl songControl = null;
     MediaPlayer mediaPlayer = new MediaPlayer();
     boolean paused = false, shuffled = false, shuffledWhilePlaying = false;
+
     // Constructor #1
     static SongControl getSongControlInstance(int songId){
         if(songControl==null) {

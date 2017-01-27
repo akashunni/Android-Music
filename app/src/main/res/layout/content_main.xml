@@ -15,14 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@android:color/background_light">
     </android.support.v4.view.ViewPager>
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.quintlr.music.MiniPlayer"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_height="60dp" />
+
 
 </RelativeLayout>

@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MyLibTabFragmentAdapter extends FragmentPagerAdapter{
 
-    private String tabTitles[] = new String[] { "*******", "Songs", "Albums", "Artists" , "Playlists"};
+    private String tabTitles[] = new String[] { "Songs", "Albums", "Artists" , "Playlists", "****"};
 
     public MyLibTabFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);

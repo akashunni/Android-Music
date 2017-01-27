@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:paddingLeft="5dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:gravity="top"
         android:layout_toRightOf="@id/artist_list_artist_logo"
         android:layout_below="@id/artist_list_artist_name"

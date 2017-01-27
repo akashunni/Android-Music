@@ -28,14 +28,12 @@ public class TabFragment extends android.support.v4.app.Fragment{
     static ArrayList<Song> songList;
     static ArrayList<Album> albumList;
     static ArrayList<Artist> artistList;
-    static boolean miniPlayerRefreshed;
 
     public static TabFragment newInstance(int page){
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         TabFragment fragment = new TabFragment();
         fragment.setArguments(args);
-        miniPlayerRefreshed = false;
         return fragment;
     }
 
@@ -58,7 +56,7 @@ public class TabFragment extends android.support.v4.app.Fragment{
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getContext(), DividerItemDecorator.VERTICAL_LIST);
         switch (getArguments().getInt(ARG_PAGE)){
             // recycler view for songs list
-            case 2:
+            case 1:
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_view);
                 final SongListAdapter songListAdapter = new SongListAdapter(songList);
                 recyclerView.setLayoutManager(layoutManager);
@@ -79,7 +77,7 @@ public class TabFragment extends android.support.v4.app.Fragment{
                 }));
                 break;
             // recycler view for albums list
-            case 3:
+            case 2:
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_view);
                 AlbumListAdapter albumListAdapter = new AlbumListAdapter(albumList, getContext());
                 recyclerView.setLayoutManager(layoutManager);
@@ -103,7 +101,7 @@ public class TabFragment extends android.support.v4.app.Fragment{
                     }
                 }));
                 break;
-            case 4:
+            case 3:
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_view);
                 ArtistListAdapter artistListAdapter = new ArtistListAdapter(artistList, getContext());
                 recyclerView.setLayoutManager(layoutManager);

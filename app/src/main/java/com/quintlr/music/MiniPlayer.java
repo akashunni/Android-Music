@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 /**
  * Created by Akash on 6/26/2016.
  */
-public class MiniPlayer extends android.support.v4.app.Fragment implements View.OnClickListener, MiniPlayerListener{
+public class MiniPlayer extends android.support.v4.app.Fragment implements View.OnClickListener{
     static ImageView mini_album_art;
     static TextView mini_song_title, mini_song_artist;
     ImageButton pause_btn, prev_btn, next_btn;
@@ -86,14 +86,6 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        /*
-        if(context instanceof MainActivity){
-            ((MainActivity)context).miniPlayerListener = this;
-        }else if (context instanceof AlbumActivity){
-            ((AlbumActivity)context).miniPlayerListener = this;
-        }*/
-
     }
 
     /**
@@ -136,19 +128,4 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
         startActivity(intent);*/
     }
 
-    @Override
-    public void setMiniPlayerValues() {
-        //Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-        Glide.with(this)
-                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
-                .into(mini_album_art);
-        mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
-        mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
-        progress_handler.postDelayed(progessbarThread,1000);
-    }
-
-    @Override
-    public void removeCallBacks() {
-        progress_handler.removeCallbacks(progessbarThread);
-    }
 }

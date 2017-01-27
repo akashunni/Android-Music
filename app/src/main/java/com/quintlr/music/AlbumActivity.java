@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -33,11 +34,13 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class AlbumActivity extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AlbumActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     RecyclerView recyclerView;
     SongListAdapter songListAdapter;
     long albumId = 0;
+    AppBarLayout appBarLayout;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class AlbumActivity extends FragmentActivity implements NavigationView.On
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(this, DividerItemDecorator.VERTICAL_LIST);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_list_view);
+        appBarLayout = (AppBarLayout) findViewById(R.id.album_layout_app_bar_layout);
 
         songListAdapter = new SongListAdapter(Fetcher.getSongsFromAlbumID(this, albumId));
         recyclerView.setLayoutManager(layoutManager);
@@ -84,10 +88,10 @@ public class AlbumActivity extends FragmentActivity implements NavigationView.On
                 .placeholder(R.drawable.loading)
                 .into(album_art);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.album_layout_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.album_layout_toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.album_layout_collapsing_toolbar);
 
-        toolbar.showOverflowMenu();
+        setSupportActionBar(toolbar);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -109,6 +113,32 @@ public class AlbumActivity extends FragmentActivity implements NavigationView.On
         collapsingToolbarLayout.setContentScrimColor(col);
         fab_album_shuffle.setBackgroundTintList(ColorStateList.valueOf(col));
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_search) {
+            Toast.makeText(this, "dnvlsknv", Toast.LENGTH_SHORT).show();
+            /*
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            appBarLayout.setExpanded(false);*/
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
