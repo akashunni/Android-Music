@@ -4,12 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="60dp"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFF"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
@@ -59,12 +61,12 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-        <fragment
+        <!--fragment
             android:id="@+id/fragment"
             android:name="com.quintlr.music.MiniPlayer"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom" /-->
 
 
         <android.support.design.widget.FloatingActionButton

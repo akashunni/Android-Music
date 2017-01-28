@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,7 +54,7 @@ public class TabFragment extends android.support.v4.app.Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycler_view, container, false);
         final RecyclerView recyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -98,9 +99,17 @@ public class TabFragment extends android.support.v4.app.Fragment {
                 recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position) {
-                        Intent intent = new Intent(getContext(), AlbumActivity.class);
+                        /*Intent intent = new Intent(getContext(), AlbumActivity.class);
                         intent.putExtra("selected_album_id", albumList.get(position).getId());
-                        startActivity(intent);
+                        startActivity(intent);*/
+                        Fragment fragment = new AlbumActivity();
+                        Bundle bundle = new Bundle();
+                        bundle.putLong("selected_album_id", albumList.get(position).getId());
+                        fragment.setArguments(bundle);
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.add(R.id.drawer_layout , fragment, "sdf")
+                                .addToBackStack("BACKSTACK");
+                        fragmentTransaction.commit();
                     }
 
                     @Override

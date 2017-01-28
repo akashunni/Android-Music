@@ -28,6 +28,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
     static ProgressBar mini_song_progress;
     static Handler progress_handler;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,8 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
     }
 
     ////////////////////////////////////////////////////////
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -87,7 +90,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
         mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
         mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
         progress_handler.postDelayed(progessbarThread,1000);
-    }
+    }*/
 
     static void setMiniPlayerValues(Context context) {
         Glide.with(context)
@@ -96,7 +99,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
         mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
         mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
         progress_handler.postDelayed(progessbarThread,1000);
-    }*/
+    }
 
     private static Runnable progessbarThread = new Runnable() {
         @Override

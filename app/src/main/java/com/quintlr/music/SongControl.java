@@ -40,6 +40,7 @@ class SongControl implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErr
 
     String getCurrentSongPath(){
         Log.d("akash", "getCurrentSongPath: "+PlayQueue.index);
+        MiniPlayer.setMiniPlayerValues(context);
         return PlayQueue.getCurrentSongPath();
     }
 
@@ -58,19 +59,19 @@ class SongControl implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErr
     }
 
     void play_pause(){
-        Log.d("akash", "BEFORE : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
-        if(mediaPlayer.isPlaying() && !paused){
+        //Log.d("akash", "BEFORE : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
+        if(mediaPlayer.isPlaying()){
             mediaPlayer.pause();
             paused = true;
-        }else if (!mediaPlayer.isPlaying() && paused){
+        }else if (!mediaPlayer.isPlaying()){
             mediaPlayer.start();
             paused = false;
         }
-        Log.d("akash", "AFTER : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
+        //Log.d("akash", "AFTER : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
     }
 
     void next_song(){
-        Log.d("akash", "next_song: ");
+        //Log.d("akash", "next_song: ");
         PlayQueue.nextSong();
         play_song();
     }
