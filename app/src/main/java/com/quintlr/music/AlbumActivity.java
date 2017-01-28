@@ -69,9 +69,9 @@ public class AlbumActivity extends AppCompatActivity implements NavigationView.O
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.RecyclerClickListener() {
             @Override
             public void OnClick(View view, int position) {
-                /**
-                 * implement play song in album view...
-                 * */
+                PlayQueue.deletePlayQueue();
+                PlayQueue.createQueue(Fetcher.getSongsFromAlbumID(getApplicationContext(), albumId));
+                SongControl.getSongControlInstance(position).play_song();
             }
 
             @Override

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -67,6 +68,13 @@ public class TabFragment extends android.support.v4.app.Fragment{
                 recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position) {
+                        if(PlayQueue.isQueueChanged()){
+                            PlayQueue.deletePlayQueue();
+                            /** I really don't know why songList has no data here after deleting the queue... So Fetching from scratch.. :( **/
+                            PlayQueue.createQueue(Fetcher.getRealSongArrayList(getContext()));
+                            PlayQueue.setQueueChanged(false);
+
+                        }
                         SongControl.getSongControlInstance(position).play_song();
                     }
 
@@ -88,10 +96,8 @@ public class TabFragment extends android.support.v4.app.Fragment{
                 recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position) {
-                        //Fetcher.getSongsFromAlbumID(getContext(), albumList.get(position).getId());
                         Intent intent = new Intent(getContext(), AlbumActivity.class);
                         intent.putExtra("selected_album_id", albumList.get(position).getId());
-                        Log.d("akash", "OnClick: "+albumList.get(position).getId());
                         startActivity(intent);
                     }
 

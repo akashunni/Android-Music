@@ -9,8 +9,9 @@ import java.util.Queue;
  */
 
 public class PlayQueue{
-    static ArrayList<Song> songQueue;
+    static ArrayList<Song> songQueue = null;
     static int index = 0;
+    static boolean changed = false;
 
     static void createQueue(ArrayList<Song> songs){
         songQueue = songs;
@@ -57,6 +58,19 @@ public class PlayQueue{
     }
 
     static void deletePlayQueue(){
+        changed = true;
         songQueue.clear();
+    }
+
+    static int numberOfSongs(){
+        return songQueue.size();
+    }
+
+    static boolean isQueueChanged(){
+        return changed;
+    }
+
+    static void setQueueChanged(boolean value){
+        changed = value;
     }
 }
