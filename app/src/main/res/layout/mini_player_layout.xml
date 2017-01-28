@@ -40,7 +40,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="7dp"
         android:scaleType="fitXY"
-        android:src="@drawable/pause_white_24dp"
+        android:src="@drawable/play_arrow_white_24dp"
         android:id="@+id/mini_pause_btn"
         android:layout_toLeftOf="@id/mini_next_btn"
         android:background="@android:color/transparent"

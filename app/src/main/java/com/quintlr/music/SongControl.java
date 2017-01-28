@@ -15,11 +15,11 @@ import static com.quintlr.music.MainActivity.context;
  * Deals with the main music playback.
  */
 
-class SongControl implements MediaPlayer.OnCompletionListener {
+class SongControl implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     static SongControl songControl = null;
     MediaPlayer mediaPlayer = new MediaPlayer();
-    boolean paused = false, shuffled = false, shuffledWhilePlaying = false;
+    boolean paused = true, shuffled = false, shuffledWhilePlaying = false;
 
     // Constructor #1
     static SongControl getSongControlInstance(int songId){
@@ -39,6 +39,7 @@ class SongControl implements MediaPlayer.OnCompletionListener {
     }
 
     String getCurrentSongPath(){
+        Log.d("akash", "getCurrentSongPath: "+PlayQueue.index);
         return PlayQueue.getCurrentSongPath();
     }
 
@@ -57,16 +58,19 @@ class SongControl implements MediaPlayer.OnCompletionListener {
     }
 
     void play_pause(){
-        if(!paused && !mediaPlayer.isPlaying()){
-            Log.d("akash", "play_pause: pauseif = "+paused);
-            mediaPlayer.start();
-        }else {
-            Log.d("akash", "play_pause: pause_else = "+paused);
+        Log.d("akash", "BEFORE : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
+        if(mediaPlayer.isPlaying() && !paused){
             mediaPlayer.pause();
+            paused = true;
+        }else if (!mediaPlayer.isPlaying() && paused){
+            mediaPlayer.start();
+            paused = false;
         }
+        Log.d("akash", "AFTER : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
     }
 
     void next_song(){
+        Log.d("akash", "next_song: ");
         PlayQueue.nextSong();
         play_song();
     }
@@ -121,6 +125,10 @@ class SongControl implements MediaPlayer.OnCompletionListener {
         return shuffled;
     }
 
+    boolean isPlaying(){
+        return mediaPlayer.isPlaying() && !paused;
+    }
+
     void setPausedState(boolean paused){
         this.paused = paused;
     }
@@ -131,7 +139,11 @@ class SongControl implements MediaPlayer.OnCompletionListener {
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-
+        next_song();
     }
 
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        return false;
+    }
 }

@@ -1,8 +1,10 @@
 package com.quintlr.music;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -11,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     DrawerLayout drawer;
     static Context context;
+    ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         MyLibTabFragmentAdapter myLibTabFragmentAdapter = new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
         if (viewPager != null) {
             viewPager.setAdapter(myLibTabFragmentAdapter);
@@ -121,17 +125,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            viewPager.setCurrentItem(4);
+        } else if (id == R.id.nav_songs) {
+            viewPager.setCurrentItem(0);
+        } else if (id == R.id.nav_albums) {
+            viewPager.setCurrentItem(1);
+        } else if (id == R.id.nav_artists) {
+            viewPager.setCurrentItem(2);
+        } else if (id == R.id.nav_playlists) {
+            viewPager.setCurrentItem(3);
+        } else if (id == R.id.nav_settings) {
 
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -144,4 +149,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("akash", "onActivityResult: "+requestCode+" "+resultCode);
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK){
+            viewPager.setCurrentItem(data.getIntExtra("TAB_ITEM",0));
+        }
+    }
 }

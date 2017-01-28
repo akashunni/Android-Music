@@ -1,6 +1,8 @@
 package com.quintlr.music;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,6 +15,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -41,6 +45,8 @@ public class AlbumActivity extends AppCompatActivity implements NavigationView.O
     long albumId = 0;
     AppBarLayout appBarLayout;
     Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +65,7 @@ public class AlbumActivity extends AppCompatActivity implements NavigationView.O
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_list_view);
         appBarLayout = (AppBarLayout) findViewById(R.id.album_layout_app_bar_layout);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         songListAdapter = new SongListAdapter(Fetcher.getSongsFromAlbumID(this, albumId));
         recyclerView.setLayoutManager(layoutManager);
@@ -96,7 +103,7 @@ public class AlbumActivity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
@@ -143,6 +150,9 @@ public class AlbumActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

@@ -56,19 +56,11 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
             @Override
             public void onClick(View v) {
                 SongControl.getSongControlInstance().prev_song();
-                //setMiniPlayerValues();
             }
         });
         pause_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SongControl.getSongControlInstance().getPausedState()){
-                    SongControl.getSongControlInstance().setPausedState(false);
-                    pause_btn.setImageResource(R.drawable.pause_white_24dp);
-                }else {
-                    SongControl.getSongControlInstance().setPausedState(true);
-                    pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
-                }
                 SongControl.getSongControlInstance().play_pause();
             }
         });
@@ -76,7 +68,6 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
             @Override
             public void onClick(View v) {
                 SongControl.getSongControlInstance().next_song();
-                //setMiniPlayerValues();
             }
         });
         return view;
@@ -127,5 +118,4 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
         intent.putExtra("selected_song_path",SongControl.getSongControlInstance().getCurrentSongPath());
         startActivity(intent);*/
     }
-
 }

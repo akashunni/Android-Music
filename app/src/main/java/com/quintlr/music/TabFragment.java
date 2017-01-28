@@ -1,10 +1,13 @@
 package com.quintlr.music;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +25,7 @@ import static com.quintlr.music.MainActivity.context;
  * Created by Akash on 6/27/2016.
  */
 
-public class TabFragment extends android.support.v4.app.Fragment{
+public class TabFragment extends android.support.v4.app.Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
@@ -30,7 +33,7 @@ public class TabFragment extends android.support.v4.app.Fragment{
     static ArrayList<Album> albumList;
     static ArrayList<Artist> artistList;
 
-    public static TabFragment newInstance(int page){
+    public static TabFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         TabFragment fragment = new TabFragment();
@@ -51,11 +54,11 @@ public class TabFragment extends android.support.v4.app.Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recycler_view,container,false);
+        View view = inflater.inflate(R.layout.recycler_view, container, false);
         final RecyclerView recyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getContext(), DividerItemDecorator.VERTICAL_LIST);
-        switch (getArguments().getInt(ARG_PAGE)){
+        switch (mPage) {
             // recycler view for songs list
             case 1:
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler_list_view);
@@ -68,12 +71,11 @@ public class TabFragment extends android.support.v4.app.Fragment{
                 recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position) {
-                        if(PlayQueue.isQueueChanged()){
+                        if (PlayQueue.isQueueChanged()) {
                             PlayQueue.deletePlayQueue();
                             /** I really don't know why songList has no data here after deleting the queue... So Fetching from scratch.. :( **/
                             PlayQueue.createQueue(Fetcher.getRealSongArrayList(getContext()));
                             PlayQueue.setQueueChanged(false);
-
                         }
                         SongControl.getSongControlInstance(position).play_song();
                     }
