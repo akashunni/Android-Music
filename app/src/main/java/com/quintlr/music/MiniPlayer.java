@@ -3,9 +3,14 @@ package com.quintlr.music;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +32,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
     ImageButton pause_btn, prev_btn, next_btn;
     static ProgressBar mini_song_progress;
     static Handler progress_handler;
+
 
 
     @Override
@@ -82,16 +88,6 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
         super.onAttach(context);
     }
 
-    /**
-    void setMiniPlayerValues() {
-        Glide.with(this)
-                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
-                .into(mini_album_art);
-        mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
-        mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
-        progress_handler.postDelayed(progessbarThread,1000);
-    }*/
-
     static void setMiniPlayerValues(Context context) {
         Glide.with(context)
                 .load(PlayQueue.getCurrentSong().getSongAlbumArt())
@@ -114,11 +110,24 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
 
     @Override
     public void onClick(View v) {
-        /***
-         * don't forget this...
-         * */
-        /*Intent intent = new Intent(getContext(),Player.class);
-        intent.putExtra("selected_song_path",SongControl.getSongControlInstance().getCurrentSongPath());
-        startActivity(intent);*/
+        Fragment fragment = new PlayerFragment();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Transition changeTransform = TransitionInflater.from(getContext()).
+                    inflateTransition(R.transition.change_image_transform);
+            Transition explodeTransform = TransitionInflater.from(getContext()).
+                    inflateTransition(android.R.transition.slide_bottom);
+
+            setSharedElementReturnTransition(changeTransform);
+            setExitTransition(explodeTransform);
+
+            fragment.setSharedElementEnterTransition(changeTransform);
+            fragment.setEnterTransition(explodeTransform);
+        }
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction
+                .add(R.id.drawer_layout , fragment, "player")
+                .addSharedElement(mini_album_art, "Transition")
+                .addToBackStack("BACKSTACK_player")
+                .commit();
     }
 }

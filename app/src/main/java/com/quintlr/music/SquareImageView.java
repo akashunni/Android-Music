@@ -6,6 +6,7 @@ package com.quintlr.music;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class SquareImageView extends ImageView {
@@ -40,6 +41,13 @@ public class SquareImageView extends ImageView {
             setMeasuredDimension(heightSize, heightSize);
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            int measuredWidth = getMeasuredWidth();
+            int measuredHeight = getMeasuredHeight();
+            if (measuredWidth > measuredHeight) {
+                setMeasuredDimension(measuredHeight, measuredHeight);
+            } else {
+                setMeasuredDimension(measuredWidth, measuredWidth);
+            }
         }
     }
 

@@ -23,9 +23,6 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchResultActivity" />
         </activity>
-        <activity
-            android:name=".AlbumActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".SearchResultActivity">
             <!-- to identify this activity as "searchable" -->

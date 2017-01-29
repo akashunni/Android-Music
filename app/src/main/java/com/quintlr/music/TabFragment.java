@@ -1,26 +1,21 @@
 package com.quintlr.music;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
-
-import static com.quintlr.music.MainActivity.context;
 
 /**
  * Created by Akash on 6/27/2016.
@@ -99,16 +94,27 @@ public class TabFragment extends android.support.v4.app.Fragment {
                 recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position) {
-                        /*Intent intent = new Intent(getContext(), AlbumActivity.class);
+                        /*Intent intent = new Intent(getContext(), AlbumFragment.class);
                         intent.putExtra("selected_album_id", albumList.get(position).getId());
                         startActivity(intent);*/
-                        Fragment fragment = new AlbumActivity();
+                        Fragment fragment = new AlbumFragment();
                         Bundle bundle = new Bundle();
                         bundle.putLong("selected_album_id", albumList.get(position).getId());
+                        /*ImageView AlbumArt = (ImageView) view.findViewById(R.id.album_list_album_art);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        Transition changeTransform = TransitionInflater.from(getContext()).
+                                inflateTransition(R.transition.change_image_transform);
+                        Transition explodeTransform = TransitionInflater.from(getContext()).
+                                inflateTransition(android.R.transition.fade);
+
+                            fragment.setSharedElementEnterTransition(changeTransform);
+                            fragment.setEnterTransition(explodeTransform);
+                        }*/
                         fragment.setArguments(bundle);
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.add(R.id.drawer_layout , fragment, "sdf")
-                                .addToBackStack("BACKSTACK");
+                        fragmentTransaction.add(R.id.drawer_layout , fragment, "album")
+                        //        .addSharedElement(AlbumArt, "albumTransition")
+                                .addToBackStack("BACKSTACK_album");
                         fragmentTransaction.commit();
                     }
 
