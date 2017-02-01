@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000">
+    android:background="@color/pitchBlack">
 
     <ImageView
         android:layout_width="60dp"
@@ -20,8 +20,7 @@
         android:id="@+id/mini_song_progess"
         android:layout_marginTop="-7dp"
         android:layout_toRightOf="@id/mini_album_art"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        />
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
 
     <ImageButton
         android:layout_width="40dp"
@@ -64,7 +63,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/mini_song_title"
         android:layout_margin="5dp"
-        android:textColor="#FFF"
+        android:textColor="@color/pureWhite"
         android:maxLines="1"
         android:layout_toRightOf="@id/mini_album_art"
         android:layout_toLeftOf="@id/mini_prev_btn"

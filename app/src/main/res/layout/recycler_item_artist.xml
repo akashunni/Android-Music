@@ -14,7 +14,7 @@
         android:id="@+id/artist_list_artist_name"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:textColor="#000"
+        android:textColor="@color/pitchBlack"
         android:paddingLeft="5dp"
         android:gravity="bottom"
         android:textSize="15sp"

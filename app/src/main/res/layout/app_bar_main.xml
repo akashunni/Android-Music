@@ -26,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
-            app:tabTextColor="#BDBDBD"
-            app:tabSelectedTextColor="#FFF"
+            app:tabTextColor="@color/lightGrey"
+            app:tabSelectedTextColor="@color/pureWhite"
             app:tabMinWidth="150dp"
             app:tabMode="scrollable" />
 
