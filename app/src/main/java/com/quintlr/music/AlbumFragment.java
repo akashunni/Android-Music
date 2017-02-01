@@ -81,7 +81,7 @@ public class AlbumFragment extends android.support.v4.app.Fragment implements Na
 
         Glide.with(getContext())
                 .load(Fetcher.getAlbumArtFromAlbumID(getContext(), albumId))
-                .placeholder(R.drawable.loading)
+                .crossFade(300)
                 .into(album_art);
 
         toolbar = (Toolbar) myView.findViewById(R.id.album_layout_toolbar);

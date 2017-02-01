@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.transition.Transition;
@@ -110,24 +111,13 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
 
     @Override
     public void onClick(View v) {
-        Fragment fragment = new PlayerFragment();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Transition changeTransform = TransitionInflater.from(getContext()).
-                    inflateTransition(R.transition.change_image_transform);
-            Transition explodeTransform = TransitionInflater.from(getContext()).
-                    inflateTransition(android.R.transition.slide_bottom);
+        Intent intent = new Intent(getContext(), PlayerActivity.class);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(getActivity(), mini_album_art, mini_album_art.getTransitionName());
+            startActivity(intent, options.toBundle());
 
-            setSharedElementReturnTransition(changeTransform);
-            setExitTransition(explodeTransform);
-
-            fragment.setSharedElementEnterTransition(changeTransform);
-            fragment.setEnterTransition(explodeTransform);
         }
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction
-                .add(R.id.drawer_layout , fragment, "player")
-                .addSharedElement(mini_album_art, "Transition")
-                .addToBackStack("BACKSTACK_player")
-                .commit();
+
     }
 }

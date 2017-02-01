@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
         android:layout_height="60dp"
-        app:tabMode="fixed" />
+        app:layout_behavior="com.quintlr.music.FixedBottomViewBehavior" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -1,5 +1,6 @@
 package com.quintlr.music;
 
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -100,22 +102,26 @@ public class TabFragment extends android.support.v4.app.Fragment {
                         Fragment fragment = new AlbumFragment();
                         Bundle bundle = new Bundle();
                         bundle.putLong("selected_album_id", albumList.get(position).getId());
-                        /*ImageView AlbumArt = (ImageView) view.findViewById(R.id.album_list_album_art);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Transition changeTransform = TransitionInflater.from(getContext()).
-                                inflateTransition(R.transition.change_image_transform);
-                        Transition explodeTransform = TransitionInflater.from(getContext()).
-                                inflateTransition(android.R.transition.fade);
+                        ImageView AlbumArt = (ImageView) view.findViewById(R.id.album_list_album_art);
 
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Transition changeTransform = TransitionInflater.from(getContext()).
+                                    inflateTransition(R.transition.change_image_transform);
+                            Transition explodeTransform = TransitionInflater.from(getContext()).
+                                    inflateTransition(android.R.transition.explode);
+
+                            setExitTransition(explodeTransform);
                             fragment.setSharedElementEnterTransition(changeTransform);
-                            fragment.setEnterTransition(explodeTransform);
-                        }*/
-                        fragment.setArguments(bundle);
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.add(R.id.drawer_layout , fragment, "album")
-                        //        .addSharedElement(AlbumArt, "albumTransition")
-                                .addToBackStack("BACKSTACK_album");
-                        fragmentTransaction.commit();
+                            fragment.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_bottom));
+
+                            fragment.setArguments(bundle);
+                            getFragmentManager()
+                                    .beginTransaction()
+                                    .add(R.id.drawer_layout, fragment, "album")
+                                    .addSharedElement(AlbumArt, AlbumArt.getTransitionName())
+                                    .addToBackStack("BACKSTACK_album")
+                                    .commit();
+                        }
                     }
 
                     @Override

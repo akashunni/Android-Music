@@ -54,4 +54,12 @@ public class Song {
             //return BitmapFactory.decodeByteArray(temp,0,temp.length);
         }
     }
+
+    Bitmap getSongAlbumArtAsBitmap(){
+        if(getSongAlbumArt() == null){
+            return null;
+        }else {
+            return BitmapFactory.decodeByteArray(getSongAlbumArt(), 0, getSongAlbumArt().length);
+        }
+    }
 }
