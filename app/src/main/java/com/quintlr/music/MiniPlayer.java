@@ -3,6 +3,7 @@ package com.quintlr.music;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +14,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -24,17 +27,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Akash on 6/26/2016.
  */
-public class MiniPlayer extends android.support.v4.app.Fragment implements View.OnClickListener{
+public class MiniPlayer extends android.support.v4.app.Fragment
+        implements View.OnTouchListener{
     static ImageView mini_album_art;
     static TextView mini_song_title, mini_song_artist;
     ImageButton pause_btn, prev_btn, next_btn;
     static ProgressBar mini_song_progress;
     static Handler progress_handler;
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.mini_player_layout, container, false);
-        view.setOnClickListener(this);
+        view.setOnTouchListener(this);
         mini_album_art = (ImageView) view.findViewById(R.id.mini_album_art);
         progress_handler = new Handler();
         mini_song_title = (TextView) view.findViewById(R.id.mini_song_title);
@@ -63,21 +67,22 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
         prev_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SongControl.getSongControlInstance().prev_song();
+                SongControl.getSongControlInstance().prevSong();
             }
         });
         pause_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SongControl.getSongControlInstance().play_pause();
+                SongControl.getSongControlInstance().playOrPause();
             }
         });
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SongControl.getSongControlInstance().next_song();
+                SongControl.getSongControlInstance().nextSong();
             }
         });
+
         return view;
     }
 
@@ -90,6 +95,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
     }
 
     static void setMiniPlayerValues(Context context) {
+        mini_song_progress.setProgress(0);
         Glide.with(context)
                 .load(PlayQueue.getCurrentSong().getSongAlbumArt())
                 .into(mini_album_art);
@@ -110,14 +116,16 @@ public class MiniPlayer extends android.support.v4.app.Fragment implements View.
     };
 
     @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(getContext(), PlayerActivity.class);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(getActivity(), mini_album_art, mini_album_art.getTransitionName());
-            startActivity(intent, options.toBundle());
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            Intent intent = new Intent(getContext(), PlayerActivity.class);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(getActivity(), mini_album_art, mini_album_art.getTransitionName());
+                startActivity(intent, options.toBundle());
 
+            }
         }
-
+        return true;
     }
 }

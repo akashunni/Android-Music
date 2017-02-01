@@ -1,5 +1,6 @@
 package com.quintlr.music;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -32,7 +34,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-public class AlbumFragment extends android.support.v4.app.Fragment implements NavigationView.OnNavigationItemSelectedListener {
+public class AlbumFragment extends android.support.v4.app.Fragment
+        implements NavigationView.OnNavigationItemSelectedListener,
+        View.OnTouchListener{
 
     RecyclerView recyclerView;
     SongListAdapter songListAdapter;
@@ -67,7 +71,7 @@ public class AlbumFragment extends android.support.v4.app.Fragment implements Na
             public void OnClick(View view, int position) {
                 PlayQueue.deletePlayQueue();
                 PlayQueue.createQueue(Fetcher.getSongsFromAlbumID(getContext(), albumId));
-                SongControl.getSongControlInstance(position).play_song();
+                SongControl.getSongControlInstance(position).loadSong();
             }
 
             @Override
@@ -110,6 +114,7 @@ public class AlbumFragment extends android.support.v4.app.Fragment implements Na
         collapsingToolbarLayout.setStatusBarScrimColor(col);
         collapsingToolbarLayout.setContentScrimColor(col);
         fab_album_shuffle.setBackgroundTintList(ColorStateList.valueOf(col));
+
 
         return myView;
 
@@ -154,4 +159,13 @@ public class AlbumFragment extends android.support.v4.app.Fragment implements Na
         return true;
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (v.getId() == R.id.album_layout_album_art) {
+            //if (event.getAction() == MotionEvent.ACTION_UP){
+            Toast.makeText(getContext(), "DDDDD", Toast.LENGTH_SHORT).show();
+            //}
+        }
+        return true;
+    }
 }

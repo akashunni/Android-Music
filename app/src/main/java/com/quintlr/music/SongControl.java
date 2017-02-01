@@ -1,25 +1,18 @@
 package com.quintlr.music;
 
-import android.content.Context;
 import android.media.MediaPlayer;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Random;
-
-import static com.quintlr.music.MainActivity.context;
 
 /**
- * Created by Akash on 6/25/2016.
- * Deals with the main music playback.
+ * Created by akash on 1/2/17.
  */
 
-class SongControl implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
+public class SongControl implements SongControlInterface, MediaPlayer.OnErrorListener {
 
     static SongControl songControl = null;
     MediaPlayer mediaPlayer = new MediaPlayer();
-    boolean paused = true, shuffled = false, shuffledWhilePlaying = false;
+    static boolean paused = true, shuffled = false;
 
     // Constructor #1
     static SongControl getSongControlInstance(int songId){
@@ -38,13 +31,14 @@ class SongControl implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErr
         return songControl;
     }
 
-    String getCurrentSongPath(){
-        Log.d("akash", "getCurrentSongPath: "+PlayQueue.index);
-        MiniPlayer.setMiniPlayerValues(context);
+    @Override
+    public String getCurrentSongPath() {
+        MiniPlayer.setMiniPlayerValues(MainActivity.context);
         return PlayQueue.getCurrentSongPath();
     }
 
-    void play_song(){
+    @Override
+    public void loadSong() {
         if(mediaPlayer!=null){
             try {
                 mediaPlayer.reset();
@@ -54,51 +48,48 @@ class SongControl implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErr
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            play_pause();
+            playOrPause();
         }
     }
 
-    void play_pause(){
-        //Log.d("akash", "BEFORE : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
+    @Override
+    public void playOrPause() {
         if(mediaPlayer.isPlaying()){
             mediaPlayer.pause();
-            paused = true;
         }else if (!mediaPlayer.isPlaying()){
             mediaPlayer.start();
-            paused = false;
         }
-        //Log.d("akash", "AFTER : isPlay = "+mediaPlayer.isPlaying()+" :: paused = "+paused);
     }
 
-    void next_song(){
-        //Log.d("akash", "next_song: ");
+    @Override
+    public void nextSong() {
         PlayQueue.nextSong();
-        play_song();
+        loadSong();
     }
 
-    void prev_song(){
+    @Override
+    public void prevSong() {
         PlayQueue.prevSong();
-        play_song();
+        loadSong();
     }
 
-
-    void seekTo(int progress){
+    @Override
+    public void seekTo(int progress) {
         mediaPlayer.seekTo(progress);
     }
 
-    void setLooping(boolean isSet){
-        if(isSet){
-            mediaPlayer.setLooping(true);
-        }else{
-            mediaPlayer.setLooping(false);
-        }
+    @Override
+    public void setLooping(boolean Set) {
+        mediaPlayer.setLooping(Set);
     }
 
-    boolean isLooping(){
+    @Override
+    public boolean isLooping() {
         return mediaPlayer.isLooping();
     }
 
-    String getTotalDuration(){
+    @Override
+    public String getTotalDuration() {
         int mil_sec = mediaPlayer.getDuration();
         int min = mil_sec / 60000;
         float real_min = (float) mil_sec / 60000;
@@ -115,32 +106,34 @@ class SongControl implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErr
         return time;
     }
 
-    void setShuffledState(boolean shuffled) {
-        this.shuffled = shuffled;
-        if(mediaPlayer.isPlaying()){
-            shuffledWhilePlaying = true;
-        }
+    @Override
+    public void setShuffledState(boolean shuffled) {
+
     }
 
-    boolean getShuffledState(){
-        return shuffled;
+    @Override
+    public boolean getShuffledState() {
+        return false;
     }
 
-    boolean isPlaying(){
-        return mediaPlayer.isPlaying() && !paused;
+    @Override
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
     }
 
-    void setPausedState(boolean paused){
-        this.paused = paused;
+    @Override
+    public void setPausedState(boolean paused) {
+        paused = paused;
     }
 
-    boolean getPausedState(){
+    @Override
+    public boolean getPausedState() {
         return paused;
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        next_song();
+        nextSong();
     }
 
     @Override

@@ -77,7 +77,7 @@ public class TabFragment extends android.support.v4.app.Fragment {
                             PlayQueue.createQueue(Fetcher.getRealSongArrayList(getContext()));
                             PlayQueue.setQueueChanged(false);
                         }
-                        SongControl.getSongControlInstance(position).play_song();
+                        SongControl.getSongControlInstance(position).loadSong();
                     }
 
                     @Override

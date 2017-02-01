@@ -67,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_shuffle_white_24dp"
+            android:clickable="true"
             app:layout_anchor="@id/album_layout_app_bar_layout"
             app:layout_anchorGravity="bottom|right|end"
             />

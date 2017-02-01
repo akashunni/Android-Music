@@ -14,6 +14,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity{
 
     public static Bitmap blur_album_art = null;
     static boolean set_zero_seekbar = true;
@@ -59,7 +60,7 @@ public class PlayerActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                
+
             }
 
             @Override
@@ -69,6 +70,35 @@ public class PlayerActivity extends AppCompatActivity {
 
 
         });
+
+        next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SongControl.getSongControlInstance().nextSong();
+            }
+        });
+
+        prev_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SongControl.getSongControlInstance().prevSong();
+            }
+        });
+
+        play_pause_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SongControl.getSongControlInstance().playOrPause();
+            }
+        });
+
+        shfl_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     void setPlayerValues(){
@@ -88,7 +118,9 @@ public class PlayerActivity extends AppCompatActivity {
             blur_album_art = fastblur(this, blur_album_art, 15);
             blur_back.setImageBitmap(blur_album_art);
         }
+
         seekBar.postDelayed(seekbarThread,1000);
+
         if (SongControl.getSongControlInstance().getPausedState()){
             play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
         }else{
