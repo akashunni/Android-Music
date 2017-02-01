@@ -89,10 +89,9 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
     }
 
     @Override
-    public String getTotalDuration() {
-        int mil_sec = mediaPlayer.getDuration();
-        int min = mil_sec / 60000;
-        float real_min = (float) mil_sec / 60000;
+    public String getTimeFromMilliSec(int milliSec) {
+        int min = milliSec / 60000;
+        float real_min = (float) milliSec / 60000;
         int sec = (int) ((real_min - min) * 60);
         String time;
         if(min<10)
@@ -104,6 +103,16 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
         else
             time = time+":"+sec;
         return time;
+    }
+
+    @Override
+    public String getTotalDuration() {
+        return getTimeFromMilliSec(mediaPlayer.getDuration());
+    }
+
+    @Override
+    public String getElapsedTime() {
+        return getTimeFromMilliSec(mediaPlayer.getCurrentPosition());
     }
 
     @Override

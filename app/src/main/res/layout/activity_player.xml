@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cardview_dark_background"
     tools:context="com.quintlr.music.PlayerActivity">
 
     <ImageView
@@ -116,6 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/player_seekbar"
+        android:layout_marginLeft="5dp"
         android:layout_alignParentLeft="true"
         android:textColor="#fff"
         android:text="00:00"
@@ -127,6 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/player_seekbar"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="20dp"
         android:textColor="#fff"
         android:text="00:00"

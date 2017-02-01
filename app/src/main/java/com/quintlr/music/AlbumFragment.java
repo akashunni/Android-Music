@@ -47,12 +47,28 @@ public class AlbumFragment extends android.support.v4.app.Fragment
     ViewPager viewPager;
     CollapsingToolbarLayout collapsingToolbarLayout;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState == null){
+            Bundle extras = getArguments();
+            albumId = extras.getLong("selected_album_id", 0L);
+            Log.d("akash", "onCreate: "+albumId);
+        }else {
+            albumId = (long) savedInstanceState.getSerializable("selected_album_id");
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View myView = inflater.inflate(R.layout.fragment_album, container, false);
 
+        /////////////////////////////\\
+        myView.setOnTouchListener(this);
+        //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecorator(getContext(), DividerItemDecorator.VERTICAL_LIST);
 
@@ -122,18 +138,6 @@ public class AlbumFragment extends android.support.v4.app.Fragment
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(savedInstanceState == null){
-            Bundle extras = getArguments();
-            albumId = extras.getLong("selected_album_id", 0L);
-            Log.d("akash", "onCreate: "+albumId);
-        }else {
-            albumId = (long) savedInstanceState.getSerializable("selected_album_id");
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -159,13 +163,10 @@ public class AlbumFragment extends android.support.v4.app.Fragment
         return true;
     }
 
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (v.getId() == R.id.album_layout_album_art) {
-            //if (event.getAction() == MotionEvent.ACTION_UP){
-            Toast.makeText(getContext(), "DDDDD", Toast.LENGTH_SHORT).show();
-            //}
-        }
-        return true;
+        Log.d("akash", "onTouch: ");
+        return false;
     }
 }

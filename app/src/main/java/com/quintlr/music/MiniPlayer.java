@@ -58,12 +58,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment
         pause_btn = (ImageButton) view.findViewById(R.id.mini_pause_btn);
         next_btn = (ImageButton) view.findViewById(R.id.mini_next_btn);
         mini_song_progress = (ProgressBar) view.findViewById(R.id.mini_song_progess);
-        mini_album_art.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         prev_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,14 +112,21 @@ public class MiniPlayer extends android.support.v4.app.Fragment
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Intent intent = new Intent(getContext(), PlayerActivity.class);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(getActivity(), mini_album_art, mini_album_art.getTransitionName());
-                startActivity(intent, options.toBundle());
 
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(
+                                getActivity(),
+                                mini_album_art,
+                                mini_album_art.getTransitionName());
+                startActivity(intent, options.toBundle());
+            }else {
+                startActivity(intent);
             }
+
         }
         return true;
     }

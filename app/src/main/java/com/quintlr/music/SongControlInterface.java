@@ -17,6 +17,8 @@ public interface SongControlInterface extends MediaPlayer.OnCompletionListener {
     void setLooping(boolean isSet);
     boolean isLooping();
     String getTotalDuration();
+    String getElapsedTime();
+    String getTimeFromMilliSec(int milliSec);
     void setShuffledState(boolean shuffled);
     boolean getShuffledState();
     boolean isPlaying();

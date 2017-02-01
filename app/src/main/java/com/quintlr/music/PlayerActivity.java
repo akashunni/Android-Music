@@ -12,24 +12,30 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-public class PlayerActivity extends AppCompatActivity{
+public class PlayerActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
     public static Bitmap blur_album_art = null;
     static boolean set_zero_seekbar = true;
     ImageView blur_back, album_art;
     ImageButton play_pause_btn, next_btn, prev_btn, rep_btn, shfl_btn;
     SeekBar seekBar;
-    TextView songTitle, songAlbum, songArtist, totalTime;
+    TextView songTitle, songAlbum, songArtist, totalTime, elapsedTime;
+    GestureDetectorCompat gestureDetectorCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class PlayerActivity extends AppCompatActivity{
         songTitle = (TextView) findViewById(R.id.player_song_title);
         songAlbum = (TextView) findViewById(R.id.player_album_title);
         songArtist = (TextView) findViewById(R.id.player_song_artist);
+        elapsedTime = (TextView) findViewById(R.id.player_time_elapsed);
         totalTime = (TextView) findViewById(R.id.player_time_total);
         play_pause_btn = (ImageButton) findViewById(R.id.player_play_button);
         next_btn = (ImageButton) findViewById(R.id.player_next_button);
@@ -55,17 +62,16 @@ public class PlayerActivity extends AppCompatActivity{
             public void onProgressChanged(SeekBar seekBar, int progress, boolean from_user) {
                 if(from_user){
                     SongControl.getSongControlInstance().seekTo(progress);
+                    elapsedTime.setText(SongControl.getSongControlInstance().getTimeFromMilliSec(progress));
                 }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
 
 
@@ -99,10 +105,15 @@ public class PlayerActivity extends AppCompatActivity{
             }
         });
 
+        gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), this);
     }
 
+
     void setPlayerValues(){
+        seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
+        seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
         totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
+        elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
         songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
         songAlbum.setText(PlayQueue.getCurrentSong().getAlbumName());
         songArtist.setText(PlayQueue.getCurrentSong().getSongArtist());
@@ -140,6 +151,7 @@ public class PlayerActivity extends AppCompatActivity{
             }
             /** upto here */
             if (SongControl.getSongControlInstance().mediaPlayer.isPlaying()){
+                elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
                 seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
                 seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
                 seekBar.postDelayed(this, 1000);
@@ -186,4 +198,43 @@ public class PlayerActivity extends AppCompatActivity{
         return  null;
     }
     /** upto here */
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetectorCompat.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        if ((e2.getY()-e1.getY()) > 125){
+            onBackPressed();
+        }
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
+    }
 }
