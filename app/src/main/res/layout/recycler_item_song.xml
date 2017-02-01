@@ -4,34 +4,43 @@
     android:layout_height="60dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true"
-    android:padding="5dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:textColor="#000"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/song_list_song_title" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_below="@id/song_list_song_title"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:maxLines="1"
-        android:id="@+id/song_list_song_artist" />
+    android:focusable="true">
 
     <ImageView
         android:id="@+id/dots"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/menu_dots"/>
+        android:src="@drawable/ic_action_more_vert"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_toLeftOf="@id/dots"
+        android:paddingLeft="10dp"
+        android:id="@+id/song_list_text_area">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:maxLines="1"
+            android:id="@+id/song_list_song_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:maxLines="1"
+            android:id="@+id/song_list_song_artist" />
+
+    </LinearLayout>
 
 </RelativeLayout>

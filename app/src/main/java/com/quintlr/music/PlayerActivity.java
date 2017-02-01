@@ -48,6 +48,27 @@ public class PlayerActivity extends AppCompatActivity {
         shfl_btn = (ImageButton) findViewById(R.id.player_shuffle_button);
         seekBar.setPadding(0,0,0,0);
         setPlayerValues();
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean from_user) {
+                if(from_user){
+                    SongControl.getSongControlInstance().seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+
+        });
     }
 
     void setPlayerValues(){
@@ -74,6 +95,8 @@ public class PlayerActivity extends AppCompatActivity {
             play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
         }
     }
+
+
 
     private Runnable seekbarThread = new Runnable() {
         @Override

@@ -13,6 +13,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -142,5 +144,4 @@ public class TabFragment extends android.support.v4.app.Fragment {
         }
         return view;
     }
-
 }
