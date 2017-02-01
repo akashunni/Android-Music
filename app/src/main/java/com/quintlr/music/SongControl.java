@@ -1,7 +1,6 @@
 package com.quintlr.music;
 
 import android.media.MediaPlayer;
-
 import java.io.IOException;
 
 /**
