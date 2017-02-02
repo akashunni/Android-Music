@@ -107,7 +107,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         shfl_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SongControl.getSongControlInstance().getShuffledState()){
+                if (!SongControl.getSongControlInstance().isShuffled()){
                     PlayQueue.shuffleQueue();
                     SongControl.getSongControlInstance().setShuffledState(true);
                     Toast.makeText(PlayerActivity.this, "Shuffling Songs", Toast.LENGTH_SHORT).show();

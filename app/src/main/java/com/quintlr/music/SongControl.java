@@ -124,7 +124,7 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
     }
 
     @Override
-    public boolean getShuffledState() {
+    public boolean isShuffled() {
         return shuffle;
     }
 

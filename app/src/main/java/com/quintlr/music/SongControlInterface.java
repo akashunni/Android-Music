@@ -20,7 +20,7 @@ public interface SongControlInterface extends MediaPlayer.OnCompletionListener {
     String getElapsedTime();
     String getTimeFromMilliSec(int milliSec);
     void setShuffledState(boolean shuffled);
-    boolean getShuffledState();
+    boolean isShuffled();
     boolean isPlaying();
     void setPausedState(boolean pausedState);
     boolean getPausedState();

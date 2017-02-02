@@ -99,7 +99,7 @@ public class MiniPlayer extends android.support.v4.app.Fragment
                 .into(mini_album_art);
         mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
         mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
-        progress_handler.postDelayed(progessbarThread,1000);
+        progress_handler.post(progessbarThread);
     }
 
     private static Runnable progessbarThread = new Runnable() {

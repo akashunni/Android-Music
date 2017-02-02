@@ -44,10 +44,10 @@ public class TabFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /****DANGEROUS*******/
         songList = Fetcher.getRealSongArrayList(getContext());
         albumList = Fetcher.getAlbumList(getContext());
         artistList = Fetcher.getArtistList(getContext());
-        PlayQueue.createQueue(songList);
         mPage = getArguments().getInt(ARG_PAGE);
     }
 

@@ -134,7 +134,11 @@ public class AlbumFragment extends android.support.v4.app.Fragment
         fab_album_shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getContext(), "Shuffling Songs", Toast.LENGTH_SHORT).show();
+                PlayQueue.deletePlayQueue();
+                PlayQueue.createQueue(Fetcher.getSongsFromAlbumID(getContext(), albumId));
                 PlayQueue.shuffleQueue();
+                SongControl.getSongControlInstance().loadSong();
             }
         });
 
