@@ -33,14 +33,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SharedPrefs.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SharedPrefs.java" />
     </list>
     <ignored path="Music.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,8 +72,8 @@
       <file leaf-file-name="PlayQueue.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="21" column="2" selection-start-line="21" selection-start-column="0" selection-end-line="22" selection-end-column="78" />
+            <state relative-caret-position="79">
+              <caret line="93" column="22" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -2508,7 +2504,14 @@
       <option name="project" value="LOCAL" />
       <updated>1486039719200</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Fixed ShuffleSong bug in PlayerActivity.">
+      <created>1486047791589</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1486047791589</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2576,7 +2579,8 @@
     <MESSAGE value="SeekBar &amp; ProgressBar animation implemented." />
     <MESSAGE value="Dedicated class for SeekBar &amp; ProgressBar animation added." />
     <MESSAGE value="All FAB buttons are functional." />
-    <option name="LAST_COMMIT_MESSAGE" value="All FAB buttons are functional." />
+    <MESSAGE value="Fixed ShuffleSong bug in PlayerActivity." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed ShuffleSong bug in PlayerActivity." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2977,8 +2981,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="21" column="2" selection-start-line="21" selection-start-column="0" selection-end-line="22" selection-end-column="78" />
+        <state relative-caret-position="79">
+          <caret line="93" column="22" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
           <folding />
         </state>
       </provider>
