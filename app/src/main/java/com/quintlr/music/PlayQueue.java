@@ -1,6 +1,9 @@
 package com.quintlr.music;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -11,6 +14,7 @@ import java.util.Queue;
 public class PlayQueue{
     static ArrayList<Song> songQueue = null;
     static int index = 0;
+    /** to check that the list is changed from other classes ***/
     static boolean changed = false;
 
     static void createQueue(ArrayList<Song> songs){
@@ -63,7 +67,9 @@ public class PlayQueue{
     }
 
     static int numberOfSongs(){
-        return songQueue.size();
+        if (songQueue != null)
+            return songQueue.size();
+        return 0;
     }
 
     static boolean isQueueChanged(){
@@ -72,5 +78,19 @@ public class PlayQueue{
 
     static void setQueueChanged(boolean value){
         changed = value;
+    }
+
+    static void shuffleQueue(){
+        if(songQueue != null) {
+            Collections.shuffle(songQueue);
+            changed = true;
+        }
+    }
+
+    static void appendSongsToQueue(ArrayList<Song> extra){
+        if (songQueue != null && extra != null){
+            songQueue.removeAll(extra);
+            songQueue.addAll(extra);
+        }
     }
 }

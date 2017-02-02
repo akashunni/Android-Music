@@ -10,18 +10,30 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/loading"
         android:transitionName="albumTransition"
         android:id="@+id/album_list_album_art"/>
+
+    <ImageView
+        android:id="@+id/dots_album_list"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_action_more_vert"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textColor="@color/pitchBlack"
+        android:text="Album Name"
         android:paddingLeft="5dp"
         android:gravity="bottom"
         android:textSize="15sp"
         android:id="@+id/album_list_album_name"
+        android:layout_toLeftOf="@id/dots_album_list"
         android:layout_toRightOf="@id/album_list_album_art"
         android:layout_alignParentTop="true"
         />
@@ -30,9 +42,11 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:id="@+id/album_list_artist"
+        android:text="Artist Name"
         android:paddingLeft="5dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:gravity="top"
+        android:layout_toLeftOf="@id/dots_album_list"
         android:layout_toRightOf="@id/album_list_album_art"
         android:layout_below="@id/album_list_album_name"
         />

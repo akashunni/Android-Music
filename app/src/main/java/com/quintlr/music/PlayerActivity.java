@@ -81,6 +81,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
             @Override
             public void onClick(View v) {
                 SongControl.getSongControlInstance().nextSong();
+                setPlayerValues();
             }
         });
 
@@ -88,6 +89,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
             @Override
             public void onClick(View v) {
                 SongControl.getSongControlInstance().prevSong();
+                setPlayerValues();
             }
         });
 
@@ -101,7 +103,8 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         shfl_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PlayQueue.shuffleQueue();
+                /**  **/
             }
         });
 
@@ -125,7 +128,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
         if(blur_album_art!=null){
             blur_album_art = Bitmap.createScaledBitmap(blur_album_art,50,50,true);
-            blur_album_art = changeBitmapContrastBrightness(blur_album_art,1,-60);
+            blur_album_art = changeBitmapContrastBrightness(blur_album_art,1,-70);
             blur_album_art = fastblur(this, blur_album_art, 15);
             blur_back.setImageBitmap(blur_album_art);
         }

@@ -11,7 +11,7 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
 
     static SongControl songControl = null;
     MediaPlayer mediaPlayer = new MediaPlayer();
-    static boolean paused = true, shuffled = false;
+    static boolean paused = true, shuffle = false;
 
     // Constructor #1
     static SongControl getSongControlInstance(int songId){
@@ -116,12 +116,12 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
 
     @Override
     public void setShuffledState(boolean shuffled) {
-
+        shuffle = shuffled;
     }
 
     @Override
     public boolean getShuffledState() {
-        return false;
+        return shuffle;
     }
 
     @Override

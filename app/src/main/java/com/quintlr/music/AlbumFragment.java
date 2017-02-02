@@ -131,6 +131,13 @@ public class AlbumFragment extends android.support.v4.app.Fragment
         collapsingToolbarLayout.setContentScrimColor(col);
         fab_album_shuffle.setBackgroundTintList(ColorStateList.valueOf(col));
 
+        fab_album_shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlayQueue.shuffleQueue();
+            }
+        });
+
 
         return myView;
 
