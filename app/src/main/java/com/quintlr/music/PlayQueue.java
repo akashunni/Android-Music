@@ -19,8 +19,8 @@ public class PlayQueue{
 
     static void createQueue(ArrayList<Song> songs){
         songQueue = songs;
-        for (int i =0; i< songQueue.size(); i++)
-            Log.d("akash", "NEW: "+i+" : "+songQueue.get(i).getSongTitle());
+/*        for (int i =0; i< songQueue.size(); i++)
+            Log.d("akash", "NEW: "+i+" : "+songQueue.get(i).getSongTitle());*/
     }
 
     static ArrayList<Song> getSongQueue(){
@@ -88,10 +88,13 @@ public class PlayQueue{
          * MAJOR BUG : The currently playing song's index is not changed.
          * */
         if(songQueue != null) {
+            Song currentSong = getCurrentSong();
             Collections.shuffle(songQueue);
+            songQueue.remove(currentSong);
+            songQueue.add(index, currentSong);
             changed = true;
-            for (int i =0; i< songQueue.size(); i++)
-                Log.d("akash", "shuffleQueue: "+i+" : "+songQueue.get(i).getSongTitle());
+/*            for (int i =0; i< songQueue.size(); i++)
+                Log.d("akash", "shuffleQueue: "+i+" : "+songQueue.get(i).getSongTitle());*/
         }
     }
 

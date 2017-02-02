@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPrefs.assignCurentSongIndex(this);
+        SharedPrefs.assignCurrentSongIndex(this);
         context = this;
         // toolbar/actionbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Shuffling all Songs", Toast.LENGTH_SHORT).show();
             }
         });
+
+        /** this statement is causing the song to reload when resumed after pressing he back button **/
+        MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
     }
 
     @Override
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onPause() {
-        SharedPrefs.setCurentSongIndex(this);
+        SharedPrefs.setCurrentSongIndex(this);
         super.onPause();
     }
 

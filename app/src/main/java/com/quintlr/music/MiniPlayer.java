@@ -102,6 +102,19 @@ public class MiniPlayer extends android.support.v4.app.Fragment
         progress_handler.post(progessbarThread);
     }
 
+    static void setMiniPlayerValues(Context context, int elapsedTime, int totalTime) {
+        mini_song_progress.setMax(totalTime);
+        mini_song_progress.setProgress(elapsedTime);
+        SongControl.getSongControlInstance().loadSong();
+        Glide.with(context)
+                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
+                .into(mini_album_art);
+        mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
+        mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
+        SongControl.getSongControlInstance().seekTo(elapsedTime);
+        progress_handler.post(progessbarThread);
+    }
+
     private static Runnable progessbarThread = new Runnable() {
         @Override
         public void run() {
