@@ -79,20 +79,10 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
 
         });
 
-        final ValueAnimator anim = new ValueAnimator();
-        anim.setDuration(300);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                seekBar.setProgress((int) animation.getAnimatedValue());
-            }
-        });
-
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                anim.setIntValues(seekBar.getProgress(), 0);
-                anim.start();
+                ProgressAnimator.startProgressAnimator(seekBar, seekBar.getProgress(), 0);
                 SongControl.getSongControlInstance().nextSong();
                 setPlayerValuesExceptSeekBar();
             }
@@ -101,8 +91,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         prev_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                anim.setIntValues(seekBar.getProgress(), 0);
-                anim.start();
+                ProgressAnimator.startProgressAnimator(seekBar, seekBar.getProgress(), 0);
                 SongControl.getSongControlInstance().prevSong();
                 setPlayerValuesExceptSeekBar();
             }
