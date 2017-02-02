@@ -1,5 +1,6 @@
 package com.quintlr.music;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -59,9 +60,20 @@ public class MiniPlayer extends android.support.v4.app.Fragment
         next_btn = (ImageButton) view.findViewById(R.id.mini_next_btn);
         mini_song_progress = (ProgressBar) view.findViewById(R.id.mini_song_progess);
 
+        final ValueAnimator anim = new ValueAnimator();
+        anim.setDuration(300);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mini_song_progress.setProgress((int) animation.getAnimatedValue());
+            }
+        });
+
         prev_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                anim.setIntValues(mini_song_progress.getProgress(), 0);
+                anim.start();
                 SongControl.getSongControlInstance().prevSong();
             }
         });
@@ -74,6 +86,8 @@ public class MiniPlayer extends android.support.v4.app.Fragment
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                anim.setIntValues(mini_song_progress.getProgress(), 0);
+                anim.start();
                 SongControl.getSongControlInstance().nextSong();
             }
         });

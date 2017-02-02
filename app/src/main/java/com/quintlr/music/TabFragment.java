@@ -76,6 +76,7 @@ public class TabFragment extends android.support.v4.app.Fragment {
                             /** I really don't know why songList has no data here after deleting the queue... So Fetching from scratch.. :( **/
                             PlayQueue.createQueue(Fetcher.getRealSongArrayList(getContext()));
                             PlayQueue.setQueueChanged(false);
+                            SongControl.getSongControlInstance().setShuffledState(false);
                         }
                         SongControl.getSongControlInstance(position).loadSong();
                     }

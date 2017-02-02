@@ -1,5 +1,6 @@
 package com.quintlr.music;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -77,19 +79,32 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
 
         });
 
+        final ValueAnimator anim = new ValueAnimator();
+        anim.setDuration(300);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                seekBar.setProgress((int) animation.getAnimatedValue());
+            }
+        });
+
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                anim.setIntValues(seekBar.getProgress(), 0);
+                anim.start();
                 SongControl.getSongControlInstance().nextSong();
-                setPlayerValues();
+                setPlayerValuesExceptSeekBar();
             }
         });
 
         prev_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                anim.setIntValues(seekBar.getProgress(), 0);
+                anim.start();
                 SongControl.getSongControlInstance().prevSong();
-                setPlayerValues();
+                setPlayerValuesExceptSeekBar();
             }
         });
 
@@ -103,7 +118,11 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         shfl_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayQueue.shuffleQueue();
+                if (SongControl.getSongControlInstance().getShuffledState()){
+                    PlayQueue.shuffleQueue();
+                    SongControl.getSongControlInstance().setShuffledState(true);
+                    Toast.makeText(PlayerActivity.this, "Shuffling Songs", Toast.LENGTH_SHORT).show();
+                }
                 /**  **/
             }
         });
@@ -133,7 +152,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
             blur_back.setImageBitmap(blur_album_art);
         }
 
-        seekBar.postDelayed(seekbarThread,1000);
+        seekBar.post(seekbarThread);
 
         if (SongControl.getSongControlInstance().getPausedState()){
             play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
@@ -143,16 +162,41 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
     }
 
 
+    void setPlayerValuesExceptSeekBar(){
+        seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
+        seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
+        totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
+        elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
+        songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
+        songAlbum.setText(PlayQueue.getCurrentSong().getAlbumName());
+        songArtist.setText(PlayQueue.getCurrentSong().getSongArtist());
+
+        Glide.with(this)
+                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
+                .into(album_art);
+
+        blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
+        if(blur_album_art!=null){
+            blur_album_art = Bitmap.createScaledBitmap(blur_album_art,50,50,true);
+            blur_album_art = changeBitmapContrastBrightness(blur_album_art,1,-70);
+            blur_album_art = fastblur(this, blur_album_art, 15);
+            blur_back.setImageBitmap(blur_album_art);
+        }
+
+        if (SongControl.getSongControlInstance().getPausedState()){
+            play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+        }else{
+            play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
+        }
+    }
 
     private Runnable seekbarThread = new Runnable() {
         @Override
         public void run() {
-            /** temporary solution */
             if(set_zero_seekbar){
-                setPlayerValues();
+                setPlayerValuesExceptSeekBar();
                 set_zero_seekbar = false;
             }
-            /** upto here */
             if (SongControl.getSongControlInstance().mediaPlayer.isPlaying()){
                 elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
                 seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());

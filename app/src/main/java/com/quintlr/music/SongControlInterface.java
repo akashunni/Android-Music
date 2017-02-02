@@ -22,7 +22,7 @@ public interface SongControlInterface extends MediaPlayer.OnCompletionListener {
     void setShuffledState(boolean shuffled);
     boolean getShuffledState();
     boolean isPlaying();
-    void setPausedState(boolean paused);
+    void setPausedState(boolean pausedState);
     boolean getPausedState();
 
     @Override

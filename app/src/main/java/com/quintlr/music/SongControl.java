@@ -1,6 +1,8 @@
 package com.quintlr.music;
 
 import android.media.MediaPlayer;
+import android.widget.Toast;
+
 import java.io.IOException;
 
 /**
@@ -55,8 +57,10 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
     public void playOrPause() {
         if(mediaPlayer.isPlaying()){
             mediaPlayer.pause();
+            paused = true;
         }else if (!mediaPlayer.isPlaying()){
             mediaPlayer.start();
+            paused = false;
         }
     }
 
@@ -130,8 +134,8 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
     }
 
     @Override
-    public void setPausedState(boolean paused) {
-        paused = paused;
+    public void setPausedState(boolean pausedState) {
+        paused = pausedState;
     }
 
     @Override
@@ -141,6 +145,7 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        PlayerActivity.set_zero_seekbar = true;
         nextSong();
     }
 

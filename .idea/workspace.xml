@@ -37,16 +37,11 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/AlbumFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/AlbumFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControl.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/recyclerview_scrollbar.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/recyclerview_scrollbar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/app_bar_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/app_bar_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_album.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_album.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/recycler_item_album.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/recycler_item_album.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/recycler_item_artist.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/recycler_item_artist.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/recycler_view.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/recycler_view.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControlInterface.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControlInterface.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/TabFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/TabFragment.java" />
     </list>
     <ignored path="Music.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,15 +74,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PlayQueue.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PlayQueue.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="295">
               <caret line="85" column="27" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
-              <folding>
-                <element signature="e#455#456#0" expanded="true" />
-                <element signature="e#488#489#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -95,10 +87,9 @@
       <file leaf-file-name="AlbumFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/AlbumFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="136" column="41" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
+            <state relative-caret-position="235">
+              <caret line="135" column="41" selection-start-line="135" selection-start-column="41" selection-end-line="135" selection-end-column="41" />
               <folding>
-                <element signature="e#5814#5972#0" expanded="true" />
                 <element signature="e#5971#5972#0" expanded="true" />
               </folding>
             </state>
@@ -108,8 +99,27 @@
       <file leaf-file-name="SongControl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1998">
-              <caret line="126" column="13" selection-start-line="126" selection-start-column="13" selection-end-line="126" selection-end-column="13" />
+            <state relative-caret-position="423">
+              <caret line="147" column="47" selection-start-line="147" selection-start-column="47" selection-end-line="147" selection-end-column="47" />
+              <folding>
+                <element signature="e#2935#2936#0" expanded="true" />
+                <element signature="e#2969#2970#0" expanded="true" />
+                <element signature="e#3024#3025#0" expanded="true" />
+                <element signature="e#3054#3055#0" expanded="true" />
+                <element signature="e#3102#3103#0" expanded="true" />
+                <element signature="e#3148#3149#0" expanded="true" />
+                <element signature="e#3217#3218#0" expanded="true" />
+                <element signature="e#3253#3254#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SongControlInterface.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControlInterface.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="24" column="43" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -118,8 +128,8 @@
       <file leaf-file-name="TabFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/TabFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="77" column="61" selection-start-line="77" selection-start-column="61" selection-end-line="77" selection-end-column="61" />
+            <state relative-caret-position="218">
+              <caret line="78" column="87" selection-start-line="78" selection-start-column="87" selection-end-line="78" selection-end-column="87" />
               <folding />
             </state>
           </provider>
@@ -128,11 +138,28 @@
       <file leaf-file-name="PlayerActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="106" column="24" selection-start-line="106" selection-start-column="24" selection-end-line="106" selection-end-column="24" />
+            <state relative-caret-position="43">
+              <caret line="81" column="8" selection-start-line="81" selection-start-column="8" selection-end-line="88" selection-end-column="11" />
               <folding>
-                <element signature="e#3957#4140#0" expanded="true" />
-                <element signature="e#4139#4140#0" expanded="true" />
+                <element signature="e#3378#3610#0" expanded="true" />
+                <element signature="e#3609#3610#0" expanded="true" />
+                <element signature="e#3650#3970#0" expanded="true" />
+                <element signature="e#3969#3970#0" expanded="true" />
+                <element signature="e#4600#5067#0" expanded="true" />
+                <element signature="e#5066#5067#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MiniPlayer.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="565">
+              <caret line="89" column="29" selection-start-line="89" selection-start-column="29" selection-end-line="89" selection-end-column="29" />
+              <folding>
+                <element signature="e#2444#2687#0" expanded="true" />
+                <element signature="e#2686#2687#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1901,7 +1928,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControlInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_player.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_time_popup.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/mini_player_layout.xml" />
@@ -1914,13 +1940,14 @@
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/recyclerview_scrollbar.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/recycler_view.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/recycler_item_artist.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControl.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/TabFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/AlbumFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayQueue.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/TabFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControlInterface.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControl.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java" />
       </list>
     </option>
   </component>
@@ -2431,7 +2458,14 @@
       <option name="project" value="LOCAL" />
       <updated>1485971404015</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Shuffle Implemented.">
+      <created>1486030558926</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1486030558926</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2445,8 +2479,8 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40222576" sideWeight="0.5062598" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5166932" sideWeight="0.49374023" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40222576" sideWeight="0.5093897" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5166932" sideWeight="0.49061033" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290938" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290938" sideWeight="0.49374023" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2495,7 +2529,8 @@
     <MESSAGE value="Swipe down for main player implemented.&#10;Elapsed time fixed/added.&#10;Progress bar tweaked for live elapsed time &amp; music playback." />
     <MESSAGE value="Added time popup layout." />
     <MESSAGE value="Added colors to xml." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added colors to xml." />
+    <MESSAGE value="Shuffle Implemented." />
+    <option name="LAST_COMMIT_MESSAGE" value="Shuffle Implemented." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2812,26 +2847,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="97" column="77" selection-start-line="97" selection-start-column="77" selection-end-line="97" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
           <caret line="2" column="38" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControlInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="21" column="42" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2864,40 +2883,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1998">
-          <caret line="126" column="13" selection-start-line="126" selection-start-column="13" selection-end-line="126" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/AlbumFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="136" column="41" selection-start-line="136" selection-start-column="41" selection-end-line="136" selection-end-column="41" />
+        <state relative-caret-position="235">
+          <caret line="135" column="41" selection-start-line="135" selection-start-column="41" selection-end-line="135" selection-end-column="41" />
           <folding>
-            <element signature="e#5814#5972#0" expanded="true" />
             <element signature="e#5971#5972#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/TabFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="77" column="61" selection-start-line="77" selection-start-column="61" selection-end-line="77" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="106" column="24" selection-start-line="106" selection-start-column="24" selection-end-line="106" selection-end-column="24" />
-          <folding>
-            <element signature="e#3957#4140#0" expanded="true" />
-            <element signature="e#4139#4140#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2906,9 +2897,65 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="295">
           <caret line="85" column="27" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/TabFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="78" column="87" selection-start-line="78" selection-start-column="87" selection-end-line="78" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControlInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="43" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/SongControl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="423">
+          <caret line="147" column="47" selection-start-line="147" selection-start-column="47" selection-end-line="147" selection-end-column="47" />
           <folding>
-            <element signature="e#455#456#0" expanded="true" />
-            <element signature="e#488#489#0" expanded="true" />
+            <element signature="e#2935#2936#0" expanded="true" />
+            <element signature="e#2969#2970#0" expanded="true" />
+            <element signature="e#3024#3025#0" expanded="true" />
+            <element signature="e#3054#3055#0" expanded="true" />
+            <element signature="e#3102#3103#0" expanded="true" />
+            <element signature="e#3148#3149#0" expanded="true" />
+            <element signature="e#3217#3218#0" expanded="true" />
+            <element signature="e#3253#3254#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/PlayerActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="43">
+          <caret line="81" column="8" selection-start-line="81" selection-start-column="8" selection-end-line="88" selection-end-column="11" />
+          <folding>
+            <element signature="e#3378#3610#0" expanded="true" />
+            <element signature="e#3609#3610#0" expanded="true" />
+            <element signature="e#3650#3970#0" expanded="true" />
+            <element signature="e#3969#3970#0" expanded="true" />
+            <element signature="e#4600#5067#0" expanded="true" />
+            <element signature="e#5066#5067#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/quintlr/music/MiniPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="565">
+          <caret line="89" column="29" selection-start-line="89" selection-start-column="29" selection-end-line="89" selection-end-column="29" />
+          <folding>
+            <element signature="e#2444#2687#0" expanded="true" />
+            <element signature="e#2686#2687#0" expanded="true" />
           </folding>
         </state>
       </provider>
