@@ -1,21 +1,11 @@
 package com.quintlr.music;
 
-import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Akash on 6/26/2016.
@@ -93,26 +81,34 @@ public class MiniPlayer extends android.support.v4.app.Fragment
     }
 
     static void setMiniPlayerValues(Context context) {
-        mini_song_progress.setProgress(0);
-        Glide.with(context)
-                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
-                .into(mini_album_art);
-        mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
-        mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
-        progress_handler.post(progessbarThread);
+        if (!PlayQueue.isQueueNULL()){
+            mini_song_progress.setProgress(0);
+            Glide.with(context)
+                    .load(PlayQueue.getCurrentSong().getSongAlbumArt())
+                    .into(mini_album_art);
+            mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
+            mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
+            progress_handler.post(progessbarThread);
+        }else {
+            Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
+        }
     }
 
     static void setMiniPlayerValues(Context context, int elapsedTime, int totalTime) {
-        mini_song_progress.setMax(totalTime);
-        mini_song_progress.setProgress(elapsedTime);
-        SongControl.getSongControlInstance().loadSong();
-        Glide.with(context)
-                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
-                .into(mini_album_art);
-        mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
-        mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
-        SongControl.getSongControlInstance().seekTo(elapsedTime);
-        progress_handler.post(progessbarThread);
+        if (!PlayQueue.isQueueNULL()){
+            mini_song_progress.setMax(totalTime);
+            mini_song_progress.setProgress(elapsedTime);
+            SongControl.getSongControlInstance().loadSong();
+            Glide.with(context)
+                    .load(PlayQueue.getCurrentSong().getSongAlbumArt())
+                    .into(mini_album_art);
+            mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
+            mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
+            SongControl.getSongControlInstance().seekTo(elapsedTime);
+            progress_handler.post(progessbarThread);
+        }else {
+            Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private static Runnable progessbarThread = new Runnable() {

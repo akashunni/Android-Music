@@ -1,45 +1,32 @@
 package com.quintlr.music;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawer;
     static Context context;
     ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,16 +66,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlayQueue.deletePlayQueue();
-                PlayQueue.createQueue(Fetcher.getRealSongArrayList(getApplicationContext()));
-                PlayQueue.shuffleQueue();
+                PlayQueue.reCreateListAndShuffle(Fetcher.getRealSongArrayList(getApplicationContext()));
                 SongControl.getSongControlInstance().loadSong();
                 Toast.makeText(getApplicationContext(), "Shuffling all Songs", Toast.LENGTH_SHORT).show();
             }
         });
 
-        /** this statement is causing the song to reload when resumed after pressing he back button **/
-        MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
+        if (!PlayQueue.isQueueNULL()){
+            MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
+        }else {
+            Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
+        }
+        /** this statement is causing the song to reload when resumed after pressing the back button **/
     }
 
     @Override
@@ -159,9 +148,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("akash", "onActivityResult: "+requestCode+" "+resultCode);
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK){
-            viewPager.setCurrentItem(data.getIntExtra("TAB_ITEM",0));
+        Log.d("akash", "onActivityResult: " + requestCode + " " + resultCode);
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+            viewPager.setCurrentItem(data.getIntExtra("TAB_ITEM", 0));
         }
     }
 }

@@ -4,8 +4,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Created by akash on 12/1/17.
@@ -18,9 +16,11 @@ public class PlayQueue{
     static boolean changed = false;
 
     static void createQueue(ArrayList<Song> songs){
-        songQueue = songs;
-        for (int i =0; i< songQueue.size(); i++)
-            Log.d("akash", "NEW: "+i+" : "+songQueue.get(i).getSongTitle());
+        if (songs.size() > 0){
+            songQueue = songs;
+            for (int i =0; i< songQueue.size(); i++)
+                Log.d("akash", "NEW: "+i+" : "+songQueue.get(i).getSongTitle());
+        }
     }
 
     static ArrayList<Song> getSongQueue(){
@@ -36,18 +36,22 @@ public class PlayQueue{
     }
 
     static void prevSong(){
-        if (index == 0){
-            index = songQueue.size() - 1;
-        }else {
-            index--;
+        if (!isQueueNULL()) {
+            if (index == 0) {
+                index = songQueue.size() - 1;
+            } else {
+                index--;
+            }
         }
     }
 
     static void nextSong(){
-        if(index == songQueue.size()-1){
-            index = 0;
-        }else {
-            index++;
+        if (!isQueueNULL()) {
+            if (index == songQueue.size() - 1) {
+                index = 0;
+            } else {
+                index++;
+            }
         }
     }
 
@@ -84,9 +88,6 @@ public class PlayQueue{
     }
 
     static void shuffleQueue(){
-        /**
-         * MAJOR BUG : The currently playing song's index is not changed.
-         * */
         if(songQueue != null) {
             Song currentSong = getCurrentSong();
             Collections.shuffle(songQueue);
@@ -99,10 +100,26 @@ public class PlayQueue{
         }
     }
 
+    /** utilized by FABs - Recreates the list and shuffles **/
+    static void reCreateListAndShuffle(ArrayList<Song> songList){
+        if(songQueue != null) {
+            deletePlayQueue();
+            createQueue(songList);
+            Collections.shuffle(songQueue);
+            changed = true;
+            for (int i =0; i< songQueue.size(); i++)
+                Log.d("akash", "RECREATE_shuffleQueue: "+i+" : "+songQueue.get(i).getSongTitle());
+        }
+    }
+
     static void appendSongsToQueue(ArrayList<Song> extra){
         if (songQueue != null && extra != null){
             songQueue.removeAll(extra);
             songQueue.addAll(extra);
         }
+    }
+
+    static boolean isQueueNULL(){
+        return songQueue == null;
     }
 }

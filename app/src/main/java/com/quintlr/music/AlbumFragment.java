@@ -1,9 +1,8 @@
 package com.quintlr.music;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -15,10 +14,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,7 +51,6 @@ public class AlbumFragment extends android.support.v4.app.Fragment
         if(savedInstanceState == null){
             Bundle extras = getArguments();
             albumId = extras.getLong("selected_album_id", 0L);
-            Log.d("akash", "onCreate: "+albumId);
         }else {
             albumId = (long) savedInstanceState.getSerializable("selected_album_id");
         }
@@ -109,7 +105,6 @@ public class AlbumFragment extends android.support.v4.app.Fragment
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) myView.findViewById(R.id.album_layout_collapsing_toolbar);
-        Log.d("akash", "onCreateView: "+collapsingToolbarLayout.getTitle());
 
         NavigationView navigationView = (NavigationView) myView.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -135,16 +130,12 @@ public class AlbumFragment extends android.support.v4.app.Fragment
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Shuffling Songs", Toast.LENGTH_SHORT).show();
-                PlayQueue.deletePlayQueue();
-                PlayQueue.createQueue(Fetcher.getSongsFromAlbumID(getContext(), albumId));
-                PlayQueue.shuffleQueue();
+                PlayQueue.reCreateListAndShuffle(Fetcher.getSongsFromAlbumID(getContext(), albumId));
                 SongControl.getSongControlInstance().loadSong();
             }
         });
 
-
         return myView;
-
     }
 
 

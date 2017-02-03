@@ -2,7 +2,6 @@ package com.quintlr.music;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 /**
  * Created by akash on 13/1/17.

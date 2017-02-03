@@ -1,26 +1,22 @@
 package com.quintlr.music;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.os.Build;
+import android.os.Bundle;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -121,61 +117,69 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
 
 
     void setPlayerValues(){
-        seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
-        seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
-        totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
-        elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
-        songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
-        songAlbum.setText(PlayQueue.getCurrentSong().getAlbumName());
-        songArtist.setText(PlayQueue.getCurrentSong().getSongArtist());
+        if (!PlayQueue.isQueueNULL()){
+            seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
+            seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
+            totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
+            elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
+            songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
+            songAlbum.setText(PlayQueue.getCurrentSong().getAlbumName());
+            songArtist.setText(PlayQueue.getCurrentSong().getSongArtist());
 
-        Glide.with(this)
-                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
-                .into(album_art);
+            Glide.with(this)
+                    .load(PlayQueue.getCurrentSong().getSongAlbumArt())
+                    .into(album_art);
 
-        blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
-        if(blur_album_art!=null){
-            blur_album_art = Bitmap.createScaledBitmap(blur_album_art,50,50,true);
-            blur_album_art = changeBitmapContrastBrightness(blur_album_art,1,-70);
-            blur_album_art = fastblur(this, blur_album_art, 15);
-            blur_back.setImageBitmap(blur_album_art);
-        }
+            blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
+            if(blur_album_art!=null){
+                blur_album_art = Bitmap.createScaledBitmap(blur_album_art,50,50,true);
+                blur_album_art = changeBitmapContrastBrightness(blur_album_art,1,-70);
+                blur_album_art = fastblur(this, blur_album_art, 15);
+                blur_back.setImageBitmap(blur_album_art);
+            }
 
-        seekBar.post(seekbarThread);
+            seekBar.post(seekbarThread);
 
-        if (SongControl.getSongControlInstance().getPausedState()){
-            play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
-        }else{
-            play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
+            if (SongControl.getSongControlInstance().getPausedState()){
+                play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+            }else{
+                play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
+            }
+        }else {
+            Toast.makeText(this, "No Songs Available :(", Toast.LENGTH_SHORT).show();
         }
     }
 
 
     void setPlayerValuesExceptSeekBar(){
-        seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
-        seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
-        totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
-        elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
-        songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
-        songAlbum.setText(PlayQueue.getCurrentSong().getAlbumName());
-        songArtist.setText(PlayQueue.getCurrentSong().getSongArtist());
+        if (!PlayQueue.isQueueNULL()){
+            seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
+            seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
+            totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
+            elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
+            songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
+            songAlbum.setText(PlayQueue.getCurrentSong().getAlbumName());
+            songArtist.setText(PlayQueue.getCurrentSong().getSongArtist());
 
-        Glide.with(this)
-                .load(PlayQueue.getCurrentSong().getSongAlbumArt())
-                .into(album_art);
+            Glide.with(this)
+                    .load(PlayQueue.getCurrentSong().getSongAlbumArt())
+                    .into(album_art);
 
-        blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
-        if(blur_album_art!=null){
-            blur_album_art = Bitmap.createScaledBitmap(blur_album_art,50,50,true);
-            blur_album_art = changeBitmapContrastBrightness(blur_album_art,1,-70);
-            blur_album_art = fastblur(this, blur_album_art, 15);
-            blur_back.setImageBitmap(blur_album_art);
-        }
+            blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
+            if(blur_album_art!=null){
+                blur_album_art = Bitmap.createScaledBitmap(blur_album_art,50,50,true);
+                blur_album_art = changeBitmapContrastBrightness(blur_album_art,1,-70);
+                blur_album_art = fastblur(this, blur_album_art, 15);
+                blur_back.setImageBitmap(blur_album_art);
+            }
 
-        if (SongControl.getSongControlInstance().getPausedState()){
-            play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
-        }else{
-            play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
+            if (SongControl.getSongControlInstance().getPausedState()){
+                play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+            }else{
+                play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
+            }
+        }else {
+            Toast.makeText(this, "No Songs Available :(", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -258,6 +262,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        // 125 is the threshold value set by me
         if ((e2.getY()-e1.getY()) > 125){
             onBackPressed();
         }

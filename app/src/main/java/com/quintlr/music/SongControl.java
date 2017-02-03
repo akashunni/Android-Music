@@ -40,16 +40,18 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
 
     @Override
     public void loadSong() {
-        if(mediaPlayer!=null){
-            try {
-                mediaPlayer.reset();
-                mediaPlayer.setDataSource(getCurrentSongPath());
-                mediaPlayer.prepare();
-                mediaPlayer.setOnCompletionListener(this);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (!PlayQueue.isQueueNULL()) {
+            if (mediaPlayer != null) {
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(getCurrentSongPath());
+                    mediaPlayer.prepare();
+                    mediaPlayer.setOnCompletionListener(this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                playOrPause();
             }
-            playOrPause();
         }
     }
 
