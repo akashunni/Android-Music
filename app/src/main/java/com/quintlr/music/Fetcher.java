@@ -1,9 +1,14 @@
 package com.quintlr.music;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -13,10 +18,9 @@ import java.util.ArrayList;
 
 public class Fetcher {
 
-
-    static ArrayList<Song> getRealSongArrayList(Context context){
+    static ArrayList<Song> getRealSongArrayList(Context context) {
         ArrayList<Song> songArrayList = new ArrayList<>();
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ALBUM,
@@ -29,9 +33,9 @@ public class Fetcher {
                 projection,
                 null,
                 null,
-                MediaStore.Audio.Media.TITLE+" ASC");
+                MediaStore.Audio.Media.TITLE + " ASC");
 
-        if(cursor!=null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             //add songs to array list
             do {
                 long id = cursor.getLong(0);
@@ -49,9 +53,9 @@ public class Fetcher {
         return songArrayList;
     }
 
-    static ArrayList<Album> getAlbumList(Context context){
+    static ArrayList<Album> getAlbumList(Context context) {
         ArrayList<Album> albumList = new ArrayList<>();
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 MediaStore.Audio.Albums._ID,
                 MediaStore.Audio.Albums.ALBUM,
                 MediaStore.Audio.Albums.ARTIST,
@@ -62,9 +66,9 @@ public class Fetcher {
                 projection,
                 null,
                 null,
-                MediaStore.Audio.Albums.ALBUM+" ASC");
+                MediaStore.Audio.Albums.ALBUM + " ASC");
 
-        if(cursor!=null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             //add album art path to array list
             do {
                 albumList.add(new Album(
@@ -79,7 +83,7 @@ public class Fetcher {
         return albumList;
     }
 
-    static String getAlbumArtFromAlbumID(Context context, long albumID){
+    static String getAlbumArtFromAlbumID(Context context, long albumID) {
         String[] projection = new String[]{
                 MediaStore.Audio.Albums._ID,
                 MediaStore.Audio.Albums.ALBUM_ART
@@ -91,16 +95,16 @@ public class Fetcher {
                 selection,/*selection*/
                 null,/*selection - args*/
                 null);
-        if(cursor!=null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             return cursor.getString(1);
         }
         cursor.close();
         return null;
     }
 
-    static ArrayList<Song> getSongsFromAlbumID(Context context, long albumID){
+    static ArrayList<Song> getSongsFromAlbumID(Context context, long albumID) {
         ArrayList<Song> songArrayList = new ArrayList<>();
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ALBUM,
@@ -114,9 +118,9 @@ public class Fetcher {
                 projection,
                 selection,/*selection*/
                 null,/*selection - args*/
-                MediaStore.Audio.Media.TITLE+" ASC");
+                MediaStore.Audio.Media.TITLE + " ASC");
 
-        if(cursor!=null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             //add songs to array list
             do {
                 long id = cursor.getLong(0);
@@ -133,9 +137,9 @@ public class Fetcher {
     }
 
 
-    static ArrayList<Artist> getArtistList(Context context){
+    static ArrayList<Artist> getArtistList(Context context) {
         ArrayList<Artist> artistList = new ArrayList<>();
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 MediaStore.Audio.Artists._ID,
                 MediaStore.Audio.Artists.ARTIST
                 //MediaStore.Audio.Artists.NUMBER_OF_TRACKS,
@@ -146,14 +150,14 @@ public class Fetcher {
                 projection,
                 null,
                 null,
-                MediaStore.Audio.Artists.ARTIST+" ASC");
+                MediaStore.Audio.Artists.ARTIST + " ASC");
 
-        if(cursor!=null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 artistList.add(new Artist(
                         cursor.getInt(0),
                         cursor.getString(1),
-                        1,2
+                        1, 2
                         //cursor.getInt(2),
                         //cursor.getInt(3)
                 ));

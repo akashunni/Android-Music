@@ -56,6 +56,9 @@ public class AlbumListAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return albumArrayList.size();
+        if (albumArrayList == null)
+            return 0;
+        else
+            return albumArrayList.size();
     }
 }

@@ -16,10 +16,12 @@ public class PlayQueue{
     static boolean changed = false;
 
     static void createQueue(ArrayList<Song> songs){
-        if (songs.size() > 0){
-            songQueue = songs;
-            for (int i =0; i< songQueue.size(); i++)
-                Log.d("akash", "NEW: "+i+" : "+songQueue.get(i).getSongTitle());
+        if (songs != null) {
+            if (songs.size() > 0) {
+                songQueue = songs;
+                for (int i = 0; i < songQueue.size(); i++)
+                    Log.d("akash", "NEW: " + i + " : " + songQueue.get(i).getSongTitle());
+            }
         }
     }
 

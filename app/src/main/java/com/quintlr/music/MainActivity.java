@@ -1,13 +1,19 @@
 package com.quintlr.music;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -21,11 +27,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.security.Permission;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawer;
     static Context context;
     ViewPager viewPager;
+    static final int STORAGE_PERMISSION = 1;
+    static int PERMISSION_RESULT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        MyLibTabFragmentAdapter myLibTabFragmentAdapter = new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
-        if (viewPager != null) {
-            viewPager.setAdapter(myLibTabFragmentAdapter);
-        }
+
+        // check for permissions..
+        // if permission is GRANTED then loadComponents() function is called.
+        checkAndGetPermissions();
 
         // Where tabs appears
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -59,6 +69,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tabLayout.setupWithViewPager(viewPager);
         }
 
+        if (!PlayQueue.isQueueNULL()){
+            MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
+        }else {
+            Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
+        }
+        /** this statement is causing the song to reload when resumed after pressing the back button **/
+    }
+
+    // components which require the storage permissions.
+    void loadComponents(){
+        MyLibTabFragmentAdapter myLibTabFragmentAdapter = new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
+        if (viewPager != null) {
+            viewPager.setAdapter(myLibTabFragmentAdapter);
+        }
+
+        // create the playQueue
         PlayQueue.createQueue(Fetcher.getRealSongArrayList(this));
 
         // fab button
@@ -71,13 +97,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "Shuffling all Songs", Toast.LENGTH_SHORT).show();
             }
         });
-
-        if (!PlayQueue.isQueueNULL()){
-            MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
-        }else {
-            Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
-        }
-        /** this statement is causing the song to reload when resumed after pressing the back button **/
     }
 
     @Override
@@ -142,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onPause() {
+        //saves the current song's index.
         SharedPrefs.setCurrentSongIndex(this);
         super.onPause();
     }
@@ -152,5 +172,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             viewPager.setCurrentItem(data.getIntExtra("TAB_ITEM", 0));
         }
+    }
+
+    public void checkAndGetPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            /* The permission is NOT already granted.
+             Check if the user has been asked about this permission already and denied
+             it. If so, we want to give more explanation about why the permission is needed.*/
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    /* Show our own UI next time when the user denied for the permission*/
+                    // calls when dialog shows after the first denial.
+                    //Log.d("akash", "checkAndGetPermissions: IF->RATIONALE");
+                }
+                /* Fire off an async request to actually get the permission
+                 This will show the standard permission request dialog UI*/
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION);
+            }
+        }
+    }
+
+    // callback
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION){
+            if (grantResults.length==1 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                // if permission is not granted.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                        //onDenyClick
+                    }else {
+                        //don't show again clicked
+                        // called always on start.
+                    }
+                }
+            }else {
+                //permission granted (or) allow clicked.
+                loadComponents();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
