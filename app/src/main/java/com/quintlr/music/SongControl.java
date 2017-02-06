@@ -2,7 +2,6 @@ package com.quintlr.music;
 
 import android.media.MediaPlayer;
 import android.os.PowerManager;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -82,7 +81,9 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
 
     @Override
     public void seekTo(int progress) {
-        mediaPlayer.seekTo(progress);
+        if (mediaPlayer != null){
+            mediaPlayer.seekTo(progress);
+        }
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.quintlr.music;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,8 +17,8 @@ public class PlayQueue{
         if (songs != null) {
             if (songs.size() > 0) {
                 songQueue = songs;
-                for (int i = 0; i < songQueue.size(); i++)
-                    Log.d("akash", "NEW: " + i + " : " + songQueue.get(i).getSongTitle());
+                /*for (int i = 0; i < songQueue.size(); i++)
+                    Log.d("akash", "NEW: " + i + " : " + songQueue.get(i).getSongTitle());*/
             }
         }
     }
@@ -97,8 +95,8 @@ public class PlayQueue{
             index = 0;
             songQueue.add(index, currentSong);
             changed = true;
-            for (int i =0; i< songQueue.size(); i++)
-                Log.d("akash", "shuffleQueue: "+i+" : "+songQueue.get(i).getSongTitle());
+            /*for (int i =0; i< songQueue.size(); i++)
+                Log.d("akash", "shuffleQueue: "+i+" : "+songQueue.get(i).getSongTitle());*/
         }
     }
 
@@ -109,8 +107,8 @@ public class PlayQueue{
             createQueue(songList);
             Collections.shuffle(songQueue);
             changed = true;
-            for (int i =0; i< songQueue.size(); i++)
-                Log.d("akash", "RECREATE_shuffleQueue: "+i+" : "+songQueue.get(i).getSongTitle());
+            /*for (int i =0; i< songQueue.size(); i++)
+                Log.d("akash", "RECREATE_shuffleQueue: "+i+" : "+songQueue.get(i).getSongTitle());*/
         }
     }
 

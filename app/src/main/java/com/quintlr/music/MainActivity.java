@@ -18,7 +18,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -33,8 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import java.security.Permission;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawer;
@@ -46,8 +43,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPrefs.assignCurrentSongIndex(this);
-        context = this;
+
+        context = getApplicationContext();
+
         // toolbar/actionbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,14 +58,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // nav view options selector listener
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        if (savedInstanceState == null) {
+            Log.d("akash", "onCreate: NULL");
+            SharedPrefs.assignCurrentSongIndex(this);
 
-        // check for permissions..
-        // if permission is GRANTED then loadComponents() function is called.
-        /** TO BE FIXED : when app is in background and permission is revoked **/
-        checkAndGetPermissions();
+            // check for permissions..
+            // if permission is GRANTED then loadComponents() function is called.
+            /** TO BE FIXED : when app is in background and permission is revoked **/
+            checkAndGetPermissions();
+
+            if (!PlayQueue.isQueueNULL()) {
+                //this method also includes load_song & seekTo on SongControl.
+                MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
+            } else {
+                Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
+            }
+
+        }else {
+            Log.d("akash", "onCreate: NOT NULL");
+
+            // if the orientation is changed.
+            loadComponentsAfterRotation();
+
+            //done this because the song will be loaded the other overloaded method (setminiplayervalues)
+            if (!PlayQueue.isQueueNULL()) {
+                MiniPlayer.setMiniPlayerValues(this);
+            }
+        }
 
         // Where tabs appears
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -75,16 +94,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tabLayout.setupWithViewPager(viewPager);
         }
 
-        if (!PlayQueue.isQueueNULL()){
-            MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
-        }else {
-            Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
-        }
         /** this statement is causing the song to reload when resumed after pressing the back button **/
     }
 
     // components which require the storage permissions.
     void loadComponents(){
+
         MyLibTabFragmentAdapter myLibTabFragmentAdapter = new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
         if (viewPager != null) {
             viewPager.setAdapter(myLibTabFragmentAdapter);
@@ -104,10 +119,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        // load mini player with the song.
-        SongControl.getSongControlInstance().loadSong();
     }
 
+    // sets the viewpager adapter so that it can be used by the tabLayout.
+    void loadComponentsAfterRotation(){
+
+        MyLibTabFragmentAdapter myLibTabFragmentAdapter = new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
+        if (viewPager != null) {
+            viewPager.setAdapter(myLibTabFragmentAdapter);
+        }
+
+        // fab button
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlayQueue.reCreateListAndShuffle(Fetcher.getRealSongArrayList(getApplicationContext()));
+                SongControl.getSongControlInstance().loadSong();
+                Toast.makeText(getApplicationContext(), "Shuffling all Songs", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    // when back button is pressed.
+    /** TO BE FIXED : Music pauses and plays when the app is opened after pressing the back button **/
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -170,20 +206,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onPause() {
-        //saves the current song's index.
-        SharedPrefs.setCurrentSongIndex(this);
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        SongControl.releaseMediaPlayer();
+        // saves the current playing song's index
+        SharedPrefs.setCurrentSongIndex(this);
         super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("akash", "onActivityResult: " + requestCode + " " + resultCode);
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             viewPager.setCurrentItem(data.getIntExtra("TAB_ITEM", 0));
         }
@@ -271,4 +305,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //saves the current song's index.
+        Log.d("akash", "onSaveInstanceState: ");
+        SharedPrefs.setCurrentSongIndex(this);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        // called when activity is killed by OS like
+        //Ex: Orientation
+        Log.d("akash", "onRestoreInstanceState: ");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
 }
