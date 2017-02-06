@@ -1,6 +1,7 @@
 package com.quintlr.music;
 
 import android.media.MediaPlayer;
+import android.os.PowerManager;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class SongControl implements SongControlInterface, MediaPlayer.OnErrorListener {
 
     static SongControl songControl = null;
-    MediaPlayer mediaPlayer = new MediaPlayer();
+    static MediaPlayer mediaPlayer = new MediaPlayer();
     static boolean paused = true, shuffle = false;
 
     // Constructor #1
@@ -46,6 +47,7 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
                     mediaPlayer.reset();
                     mediaPlayer.setDataSource(getCurrentSongPath());
                     mediaPlayer.prepare();
+                    mediaPlayer.setWakeMode(MainActivity.context, PowerManager.PARTIAL_WAKE_LOCK);
                     mediaPlayer.setOnCompletionListener(this);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -154,5 +156,12 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         return false;
+    }
+
+    static void releaseMediaPlayer(){
+        if (mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
