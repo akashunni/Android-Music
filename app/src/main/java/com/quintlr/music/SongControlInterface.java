@@ -18,6 +18,8 @@ public interface SongControlInterface extends MediaPlayer.OnCompletionListener {
     boolean isLooping();
     String getTotalDuration();
     String getElapsedTime();
+    int getTotalDurationInMillis();
+    int getElapsedDurationInMillis();
     String getTimeFromMilliSec(int milliSec);
     void setShuffledState(boolean shuffled);
     boolean isShuffled();

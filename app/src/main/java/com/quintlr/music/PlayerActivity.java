@@ -8,12 +8,14 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +34,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
     ImageView blur_back, album_art;
     ImageButton play_pause_btn, next_btn, prev_btn, rep_btn, shfl_btn;
     SeekBar seekBar;
+    static Handler seekbar_handler;
     TextView songTitle, songAlbum, songArtist, totalTime, elapsedTime;
     GestureDetectorCompat gestureDetectorCompat;
 
@@ -53,6 +56,9 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         rep_btn = (ImageButton) findViewById(R.id.player_repeat_button);
         shfl_btn = (ImageButton) findViewById(R.id.player_shuffle_button);
         seekBar.setPadding(0,0,0,0);
+
+        seekbar_handler = new Handler();
+
         setPlayerValues();
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -97,6 +103,10 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
             @Override
             public void onClick(View v) {
                 SongControl.getSongControlInstance().playOrPause();
+                if (SongControl.getSongControlInstance().isPlaying()){
+                    seekBar.removeCallbacks(seekbarThread);
+                    seekbarThread.run();
+                }
             }
         });
 
@@ -118,8 +128,8 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
 
     void setPlayerValues(){
         if (!PlayQueue.isQueueNULL()){
-            seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
-            seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
+            seekBar.setMax(SongControl.getSongControlInstance().getTotalDurationInMillis());
+            seekBar.setProgress(SongControl.getSongControlInstance().getElapsedDurationInMillis());
             totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
             elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
             songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
@@ -138,6 +148,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
                 blur_back.setImageBitmap(blur_album_art);
             }
 
+            seekBar.removeCallbacks(seekbarThread);
             seekBar.post(seekbarThread);
 
             if (SongControl.getSongControlInstance().getPausedState()){
@@ -153,8 +164,8 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
 
     void setPlayerValuesExceptSeekBar(){
         if (!PlayQueue.isQueueNULL()){
-            seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
-            seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
+            seekBar.setMax(SongControl.getSongControlInstance().getTotalDurationInMillis());
+            seekBar.setProgress(SongControl.getSongControlInstance().getElapsedDurationInMillis());
             totalTime.setText(SongControl.getSongControlInstance().getTotalDuration());
             elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
             songTitle.setText(PlayQueue.getCurrentSong().getSongTitle());
@@ -186,18 +197,28 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
     private Runnable seekbarThread = new Runnable() {
         @Override
         public void run() {
-            if(set_zero_seekbar){
+            if (set_zero_seekbar) {
                 setPlayerValuesExceptSeekBar();
                 set_zero_seekbar = false;
             }
-            if (SongControl.getSongControlInstance().mediaPlayer.isPlaying()){
-                elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
-                seekBar.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
-                seekBar.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
+            elapsedTime.setText(SongControl.getSongControlInstance().getElapsedTime());
+            seekBar.setMax(SongControl.getSongControlInstance().getTotalDurationInMillis());
+            seekBar.setProgress(SongControl.getSongControlInstance().getElapsedDurationInMillis());
+            if (SongControl.getSongControlInstance().isPlaying()){
                 seekBar.postDelayed(this, 1000);
             }
         }
     };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     /** This is not my code. Although I modified it :) */
     public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness)

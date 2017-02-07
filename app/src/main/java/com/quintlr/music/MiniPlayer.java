@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,6 +61,10 @@ public class MiniPlayer extends android.support.v4.app.Fragment
             @Override
             public void onClick(View v) {
                 SongControl.getSongControlInstance().playOrPause();
+                if (SongControl.getSongControlInstance().isPlaying()){
+                    progress_handler.removeCallbacks(progessbarThread);
+                    progessbarThread.run();
+                }
             }
         });
         next_btn.setOnClickListener(new View.OnClickListener() {
@@ -70,42 +75,49 @@ public class MiniPlayer extends android.support.v4.app.Fragment
             }
         });
 
+        if (savedInstanceState != null) {
+            setMiniPlayerValues(getContext());
+            /** TEMP. SOLUTION FOR PROGRESSBAR LOADING
+             * -> total & elapsed time values are same when loading at first.
+             * -> So, this calls the onCompletion method as it thinks that song is over.
+             * -> so, by applying jugaad ;) values are set when only rotation takes place.
+             * **/
+            mini_song_progress.setMax(SongControl.getSongControlInstance().getTotalDurationInMillis());
+            mini_song_progress.setProgress(SongControl.getSongControlInstance().getElapsedDurationInMillis());
+        }
+
         return view;
-    }
-
-    ////////////////////////////////////////////////////////
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     static void setMiniPlayerValues(Context context) {
         if (!PlayQueue.isQueueNULL()){
-            mini_song_progress.setProgress(0);
             Glide.with(context)
                     .load(PlayQueue.getCurrentSong().getSongAlbumArt())
                     .into(mini_album_art);
             mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
             mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
+            progress_handler.removeCallbacks(progessbarThread);
             progress_handler.post(progessbarThread);
         }else {
             Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
         }
     }
 
+    // has load_song & seekTo calls
     static void setMiniPlayerValues(Context context, int elapsedTime, int totalTime) {
         if (!PlayQueue.isQueueNULL()){
             mini_song_progress.setMax(totalTime);
             mini_song_progress.setProgress(elapsedTime);
+            ///////////////////////////////////////////////
             SongControl.getSongControlInstance().loadSong();
+            ///////////////////////////////////////////////
             Glide.with(context)
                     .load(PlayQueue.getCurrentSong().getSongAlbumArt())
                     .into(mini_album_art);
             mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
             mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
             SongControl.getSongControlInstance().seekTo(elapsedTime);
+            progress_handler.removeCallbacks(progessbarThread);
             progress_handler.post(progessbarThread);
         }else {
             Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
@@ -115,9 +127,10 @@ public class MiniPlayer extends android.support.v4.app.Fragment
     private static Runnable progessbarThread = new Runnable() {
         @Override
         public void run() {
-            if (SongControl.getSongControlInstance().mediaPlayer.isPlaying()){
-                mini_song_progress.setMax(SongControl.getSongControlInstance().mediaPlayer.getDuration());
-                mini_song_progress.setProgress(SongControl.getSongControlInstance().mediaPlayer.getCurrentPosition());
+            mini_song_progress.setProgress(SongControl.getSongControlInstance().getElapsedDurationInMillis());
+            //think about it....
+            mini_song_progress.setMax(SongControl.getSongControlInstance().getTotalDurationInMillis());
+            if (SongControl.getSongControlInstance().isPlaying()){
                 progress_handler.postDelayed(this,1000);
             }
         }
@@ -142,5 +155,24 @@ public class MiniPlayer extends android.support.v4.app.Fragment
 
         }
         return true;
+    }
+
+    @Override
+    public void onStop() {
+        progress_handler.removeCallbacks(progessbarThread);
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        progress_handler.removeCallbacks(progessbarThread);
+        progress_handler.post(progessbarThread);
+        super.onStart();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        SharedPrefs.setCurrentSongIndex(getContext());
+        super.onSaveInstanceState(outState);
     }
 }

@@ -124,6 +124,16 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
     }
 
     @Override
+    public int getTotalDurationInMillis() {
+        return mediaPlayer.getDuration();
+    }
+
+    @Override
+    public int getElapsedDurationInMillis() {
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    @Override
     public void setShuffledState(boolean shuffled) {
         shuffle = shuffled;
     }

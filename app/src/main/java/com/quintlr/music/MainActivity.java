@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         if (savedInstanceState == null) {
-            Log.d("akash", "onCreate: NULL");
             SharedPrefs.assignCurrentSongIndex(this);
 
             // check for permissions..
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }else {
-            Log.d("akash", "onCreate: NOT NULL");
 
             // if the orientation is changed.
             loadComponentsAfterRotation();
@@ -309,7 +307,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //saves the current song's index.
-        Log.d("akash", "onSaveInstanceState: ");
         SharedPrefs.setCurrentSongIndex(this);
         super.onSaveInstanceState(outState);
     }
@@ -318,7 +315,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         // called when activity is killed by OS like
         //Ex: Orientation
-        Log.d("akash", "onRestoreInstanceState: ");
         super.onRestoreInstanceState(savedInstanceState);
     }
 
