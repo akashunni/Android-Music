@@ -52,7 +52,7 @@ public class AlbumFragment extends android.support.v4.app.Fragment
             Bundle extras = getArguments();
             albumId = extras.getLong("selected_album_id", 0L);
         }else {
-            albumId = (long) savedInstanceState.getSerializable("selected_album_id");
+            albumId = savedInstanceState.getLong("selected_album_id");
         }
     }
 
@@ -138,6 +138,11 @@ public class AlbumFragment extends android.support.v4.app.Fragment
         return myView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong("selected_album_id", albumId);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -168,7 +173,6 @@ public class AlbumFragment extends android.support.v4.app.Fragment
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Log.d("akash", "onTouch: ");
         return false;
     }
 }
