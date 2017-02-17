@@ -3,6 +3,9 @@ package com.quintlr.music;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by akash on 13/1/17.
  */
@@ -34,6 +37,5 @@ public class SharedPrefs {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt("elapsedTime", 0);
     }
-
 
 }

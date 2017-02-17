@@ -196,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_playlists) {
             viewPager.setCurrentItem(3);
         } else if (id == R.id.nav_settings) {
-
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;

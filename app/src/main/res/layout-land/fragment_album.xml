@@ -8,71 +8,71 @@
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/pureWhite"
-        android:fitsSystemWindows="true">
+        android:orientation="horizontal">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/album_layout_app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <com.quintlr.music.SquareImageView
+            android:id="@+id/album_layout_album_art"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:transitionName="albumTransition"
+            android:src="@drawable/loading"
+            android:scaleType="centerCrop" />
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/album_layout_collapsing_toolbar"
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/pureWhite">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/album_layout_app_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/album_layout_collapsing_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:expandedTitleMarginEnd="64dp"
+                    app:expandedTitleMarginStart="48dp">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/album_layout_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <ImageView
-                    android:id="@+id/album_layout_album_art"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:fitsSystemWindows="true"
-                    android:transitionName="albumTransition"
-                    android:src="@drawable/loading"
-                    android:scaleType="centerCrop"
-                    app:layout_collapseMode="parallax" />
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/album_layout_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <include layout="@layout/recycler_view" />
+                <include layout="@layout/recycler_view" />
 
 
-        </android.support.v4.widget.NestedScrollView>
+            </android.support.v4.widget.NestedScrollView>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/album_layout_fab"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_shuffle_white_24dp"
-            android:clickable="true"
-            app:layout_anchor="@id/album_layout_app_bar_layout"
-            app:layout_anchorGravity="bottom|center"
-            />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/album_layout_fab"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:srcCompat="@drawable/ic_shuffle_white_24dp"
+                android:clickable="true"
+                android:layout_gravity="right|bottom"
+                />
 
-    </android.support.design.widget.CoordinatorLayout>
+        </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

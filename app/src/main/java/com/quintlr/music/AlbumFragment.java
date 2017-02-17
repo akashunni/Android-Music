@@ -153,7 +153,6 @@ public class AlbumFragment extends android.support.v4.app.Fragment
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            Toast.makeText(getContext(), "dnvlsknv", Toast.LENGTH_SHORT).show();
             /*
             toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             appBarLayout.setExpanded(false);*/
