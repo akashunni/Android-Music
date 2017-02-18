@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "679584264126",
+    "project_id": "music-159017"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679584264126:android:dbee92eeedb489b4",
+        "android_client_info": {
+          "package_name": "com.quintlr.music"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679584264126-9nt38rnjq5kem2q7enklrv0mcijjqi1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quintlr.music",
+            "certificate_hash": "838ECF58AB8B051C5D5F008B8157F4BF9BC9120E"
+          }
+        },
+        {
+          "client_id": "679584264126-pcqp11ht886i959egqshmn99br6t3l04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR2T603VmjZJgr6XRJbx6gH4DbZUf2dow"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
