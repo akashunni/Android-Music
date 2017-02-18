@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -30,14 +31,29 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     DrawerLayout drawer;
     static Context context;
     ViewPager viewPager;
     static final int STORAGE_PERMISSION = 1;
+    GoogleApiClient googleApiClient;
+    NavigationView navigationView;
+    int RC_SIGN_IN = 999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         // nav view options selector listener
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         if (savedInstanceState == null) {
@@ -93,6 +109,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         /** this statement is causing the song to reload when resumed after pressing the back button **/
+
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addConnectionCallbacks(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+                .build();
+
+        navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
+
+        if (SharedPrefs.getSignInStatus(context)){
+            //Auto sign in
+            handleSignInResult(Auth.GoogleSignInApi.silentSignIn(googleApiClient).get());
+        }
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
     }
 
     // components which require the storage permissions.
@@ -217,6 +265,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             viewPager.setCurrentItem(data.getIntExtra("TAB_ITEM", 0));
+        }else if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    void handleSignInResult(GoogleSignInResult signInResult){
+        Toast.makeText(context, signInResult.isSuccess()+"", Toast.LENGTH_SHORT).show();
+        if (signInResult.isSuccess()){
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_name).setVisibility(View.VISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_image).setVisibility(View.VISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setVisibility(View.GONE);
+            TextView userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.sign_in_name);
+            userName.setText(signInResult.getSignInAccount().getDisplayName());
+            Glide.with(context)
+                    .load(signInResult.getSignInAccount().getPhotoUrl())
+                    .into((ImageView) navigationView.getHeaderView(0).findViewById(R.id.sign_in_image));
+            SharedPrefs.setSignInStatus(context, true);
+        }else {
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_name).setVisibility(View.GONE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_image).setVisibility(View.GONE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setVisibility(View.VISIBLE);
         }
     }
 
@@ -317,4 +387,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+
+    // Google SignIn
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        /*Log.d("akash", "onConnected: "+googleApiClient.isConnected()+" :: "+googleApiClient.isConnecting());
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);*/
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 }

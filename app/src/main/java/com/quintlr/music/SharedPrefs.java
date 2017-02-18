@@ -23,6 +23,18 @@ public class SharedPrefs {
         editor.apply();
     }
 
+    static void setSignInStatus(Context context, boolean status){
+        sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("signedIn", status);
+        editor.apply();
+    }
+
+    static boolean getSignInStatus(Context context){
+        sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("signedIn", false);
+    }
+
     static void assignCurrentSongIndex(Context context){
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         PlayQueue.setIndex(sharedPreferences.getInt("songIndex", 0));
