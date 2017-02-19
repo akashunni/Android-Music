@@ -43,6 +43,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
@@ -129,9 +131,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+
+
         if (SharedPrefs.getSignInStatus(context)){
             //Auto sign in
-            handleSignInResult(Auth.GoogleSignInApi.silentSignIn(googleApiClient).get());
+            OptionalPendingResult<GoogleSignInResult> pendingResult =
+                    Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+
+            if (pendingResult.isDone()) {
+                handleSignInResult(Auth.GoogleSignInApi.silentSignIn(googleApiClient).get());
+            }else {
+                pendingResult.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                    @Override
+                    public void onResult(@NonNull GoogleSignInResult result) {
+                        handleSignInResult(result);
+                    }
+                });
+            }
         }
 
 

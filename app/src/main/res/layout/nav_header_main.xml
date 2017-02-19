@@ -25,11 +25,10 @@
         android:id="@+id/sign_in_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello, Guest!"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textColor="@color/pureWhite"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_margin="16dp" />
+        android:layout_margin="10dp"/>
 
 </RelativeLayout>
