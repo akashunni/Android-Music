@@ -47,16 +47,23 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.MetadataChangeSet;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks {
 
     DrawerLayout drawer;
     static Context context;
     ViewPager viewPager;
     static final int STORAGE_PERMISSION = 1;
-    GoogleApiClient googleApiClient;
+    static GoogleApiClient googleApiClient;
     NavigationView navigationView;
     int RC_SIGN_IN = 999;
+    String TAG = "akash";
+    String DRIVE_FOLDER_NAME = "Music - Synced Songs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
                         .requestScopes(Drive.SCOPE_APPFOLDER)
+                        .requestScopes(Drive.SCOPE_FILE)
                         .build();
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -154,6 +162,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
+        navigationView.getHeaderView(0).findViewById(R.id.sign_in_sync_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SyncActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -296,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (signInResult.isSuccess()){
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_name).setVisibility(View.VISIBLE);
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_image).setVisibility(View.VISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_sync_btn).setVisibility(View.VISIBLE);
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setVisibility(View.GONE);
             TextView userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.sign_in_name);
             userName.setText(signInResult.getSignInAccount().getDisplayName());
@@ -306,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else {
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_name).setVisibility(View.GONE);
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_image).setVisibility(View.GONE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_sync_btn).setVisibility(View.GONE);
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setVisibility(View.VISIBLE);
         }
     }
@@ -411,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Google SignIn
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.d(TAG, "onConnectionFailed: ");
     }
 
     @Override
@@ -419,10 +436,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         /*Log.d("akash", "onConnected: "+googleApiClient.isConnected()+" :: "+googleApiClient.isConnecting());
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);*/
+        Log.d(TAG, "onConnected: ");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d(TAG, "onConnectionSuspended: ");
     }
 }
