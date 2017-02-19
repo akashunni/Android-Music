@@ -156,6 +156,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="/media/akash/Storage/Projects/Android/Publish/Music/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/10.2.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="90270132a5f1a33584f453c571257dd35e728201">
+        <dex dex="/media/akash/Storage/Projects/Android/Publish/Music/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-drive-10.2.0_dfd9a8e9ae1864747e4910fcbdbc17a38e1f4ebd.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/media/akash/Storage/Projects/Android/Publish/Music/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/10.2.0/jars/classes.jar"
         jumboMode="false"
         optimize="true"
