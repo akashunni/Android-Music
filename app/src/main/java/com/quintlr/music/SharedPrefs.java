@@ -3,9 +3,6 @@ package com.quintlr.music;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created by akash on 13/1/17.
  */

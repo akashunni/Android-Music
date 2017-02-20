@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -27,43 +26,29 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.MetadataChangeSet;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,
-        GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks {
+        NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawer;
     static Context context;
     ViewPager viewPager;
     static final int STORAGE_PERMISSION = 1;
-    static GoogleApiClient googleApiClient;
     NavigationView navigationView;
     int RC_SIGN_IN = 999;
     String TAG = "akash";
-    String DRIVE_FOLDER_NAME = "Music - Synced Songs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,40 +103,25 @@ public class MainActivity extends AppCompatActivity implements
             tabLayout.setupWithViewPager(viewPager);
         }
 
-        /** this statement is causing the song to reload when resumed after pressing the back button **/
+        GoogleAPI.getInstance().createGoogleSignInOptions();
+        GoogleAPI.getInstance().buildGoogleApiClient(getApplicationContext());
 
-
-        GoogleSignInOptions googleSignInOptions =
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .requestScopes(Drive.SCOPE_APPFOLDER)
-                        .requestScopes(Drive.SCOPE_FILE)
-                        .build();
-
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addConnectionCallbacks(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
-                .addApi(Drive.API)
-                .build();
-
+        //Google Sign In Button
         navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(GoogleAPI.getInstance().getGoogleApiClient());
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
 
-
-
         if (SharedPrefs.getSignInStatus(context)){
             //Auto sign in
             OptionalPendingResult<GoogleSignInResult> pendingResult =
-                    Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+                    Auth.GoogleSignInApi.silentSignIn(GoogleAPI.getInstance().getGoogleApiClient());
 
             if (pendingResult.isDone()) {
-                handleSignInResult(Auth.GoogleSignInApi.silentSignIn(googleApiClient).get());
+                handleSignInResult(Auth.GoogleSignInApi.silentSignIn(GoogleAPI.getInstance().getGoogleApiClient()).get());
             }else {
                 pendingResult.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                     @Override
@@ -175,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        googleApiClient.connect();
+        GoogleAPI.getInstance().connect();
     }
 
     // components which require the storage permissions.
@@ -287,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+        GoogleAPI.getInstance().disconnect();
     }
 
     @Override
@@ -422,25 +393,5 @@ public class MainActivity extends AppCompatActivity implements
         // called when activity is killed by OS like
         //Ex: Orientation
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-
-    // Google SignIn
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed: ");
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        /*Log.d("akash", "onConnected: "+googleApiClient.isConnected()+" :: "+googleApiClient.isConnecting());
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);*/
-        Log.d(TAG, "onConnected: ");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "onConnectionSuspended: ");
     }
 }
