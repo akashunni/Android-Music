@@ -83,19 +83,22 @@ public class MainActivity extends AppCompatActivity implements
 
             if (!PlayQueue.isQueueNULL()) {
                 //this method also includes load_song & seekTo on SongControl.
-                MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
+                MiniPlayer.setMiniPlayerValues(this,
+                        SharedPrefs.getCurrentSongElapsedDuration(this),
+                        SharedPrefs.getCurrentSongTotalDuration(this));
             } else {
                 Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
             }
 
         }else {
-
             // if the orientation is changed.
+
             loadComponentsAfterRotation();
 
-            //done this because the song will be loaded the other overloaded method (setminiplayervalues)
+            //done this because the song will be loaded in the other overloaded method (setminiplayervalues)
             if (!PlayQueue.isQueueNULL()) {
-                MiniPlayer.setMiniPlayerValues(this);
+                // I DON'T KNOW
+                //MiniPlayer.setMiniPlayerValues(this);
             }
         }
 
@@ -105,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements
             tabLayout.setupWithViewPager(viewPager);
         }
 
+
+        // GOOGLE Works here..!
         GoogleAPI.getInstance().createGoogleSignInOptions();
         GoogleAPI.getInstance().buildGoogleApiClient(getApplicationContext());
 
@@ -153,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements
     // components which require the storage permissions.
     void loadComponents(){
 
-        MyLibTabFragmentAdapter myLibTabFragmentAdapter = new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
+        MyLibTabFragmentAdapter myLibTabFragmentAdapter =
+                new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
         if (viewPager != null) {
             viewPager.setAdapter(myLibTabFragmentAdapter);
         }

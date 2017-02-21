@@ -59,11 +59,13 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
     @Override
     public void playOrPause() {
         if(mediaPlayer.isPlaying()){
-            mediaPlayer.pause();
-            paused = true;
+            if (paused){
+                mediaPlayer.pause();
+            }
         }else if (!mediaPlayer.isPlaying()){
-            mediaPlayer.start();
-            paused = false;
+            if (!paused){
+                mediaPlayer.start();
+            }
         }
     }
 

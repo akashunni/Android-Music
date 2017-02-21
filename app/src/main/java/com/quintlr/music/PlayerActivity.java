@@ -101,6 +101,13 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         play_pause_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SongControl.getSongControlInstance().isPlaying()){
+                    SongControl.paused = true;
+                    play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+                }else {
+                    SongControl.paused = false;
+                    play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
+                }
                 SongControl.getSongControlInstance().playOrPause();
                 if (SongControl.getSongControlInstance().isPlaying()){
                     seekBar.removeCallbacks(seekbarThread);
@@ -122,6 +129,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         });
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), this);
+
     }
 
 
@@ -210,13 +218,15 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
     };
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Did this here because miniplayer was not updating the play_pause btn after the song was played/paused
+        // from this activity.
+        if (SongControl.getSongControlInstance().isPlaying()){
+            MiniPlayer.pause_btn.setImageResource(R.drawable.pause_white_24dp);
+        }else {
+            MiniPlayer.pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+        }
     }
 
     /** This is not my code. Although I modified it :) */
