@@ -58,6 +58,7 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
 
     @Override
     public void playOrPause() {
+        // only miniplayer & player activity can change paused value.
         if(mediaPlayer.isPlaying()){
             if (paused){
                 mediaPlayer.pause();

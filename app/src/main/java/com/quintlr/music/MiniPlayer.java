@@ -102,10 +102,11 @@ public class MiniPlayer extends android.support.v4.app.Fragment
             Glide.with(context)
                     .load(PlayQueue.getCurrentSong().getSongAlbumArt())
                     .into(mini_album_art);
-            if (SongControl.getSongControlInstance().isPlaying()){
-                pause_btn.setImageResource(R.drawable.pause_white_24dp);
-            }else {
+            //checking paused value since, isplaying() is false when a new song is loaded.
+            if (SongControl.paused){
                 pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+            }else {
+                pause_btn.setImageResource(R.drawable.pause_white_24dp);
             }
             mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
             mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
