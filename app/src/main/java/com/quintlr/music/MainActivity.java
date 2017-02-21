@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements
     static Context context;
     ViewPager viewPager;
     static final int STORAGE_PERMISSION = 1;
+    static String Email;
+    static Uri ImageURI;
     NavigationView navigationView;
     int RC_SIGN_IN = 999;
     String TAG = "akash";
@@ -289,6 +291,8 @@ public class MainActivity extends AppCompatActivity implements
             Glide.with(context)
                     .load(signInResult.getSignInAccount().getPhotoUrl())
                     .into((ImageView) navigationView.getHeaderView(0).findViewById(R.id.sign_in_image));
+            Email = signInResult.getSignInAccount().getEmail();
+            ImageURI = signInResult.getSignInAccount().getPhotoUrl();
             SharedPrefs.setSignInStatus(context, true);
         }else {
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_name).setVisibility(View.GONE);

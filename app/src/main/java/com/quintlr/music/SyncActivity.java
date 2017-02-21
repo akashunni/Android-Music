@@ -1,7 +1,6 @@
 package com.quintlr.music;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,18 +9,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveResource;
-import com.google.android.gms.drive.DriveSpace;
-import com.google.android.gms.drive.Metadata;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -47,6 +35,11 @@ public class SyncActivity extends AppCompatActivity {
         syncButton = (Button) findViewById(R.id.activity_sync_syncBtn);
 
         final ArrayList<Song> songArrayList = Fetcher.getRealSongArrayList(this);
+
+        profileEmail.setText(MainActivity.Email);
+        Glide.with(getApplicationContext())
+                .load(MainActivity.ImageURI)
+                .into(profilePic);
 
         syncScore.setText("50/"+songArrayList.size());
         syncProgress.setMax(songArrayList.size());
