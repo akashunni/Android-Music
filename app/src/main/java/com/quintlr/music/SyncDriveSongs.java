@@ -13,8 +13,13 @@ import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.FileUploadPreferences;
 import com.google.android.gms.drive.MetadataChangeSet;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -69,7 +74,47 @@ public class SyncDriveSongs {
     }
 
     void uploadSongs(){
+        Drive.DriveApi.newDriveContents(googleApiClient)
+                .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
+                    @Override
+                    public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
+                        if (driveContentsResult.getStatus().isSuccess()){
+                            Log.d(TAG, "new drive contents OK.");
+                            DriveContents driveContents = driveContentsResult.getDriveContents();
+                            OutputStream outputStream = driveContents.getOutputStream();
 
+                            Writer writer = new OutputStreamWriter(outputStream);
+                            try {
+                                writer.write("HAHAH");
+                                writer.close();
+                            } catch (IOException e) {
+                                Log.e(TAG, e.getMessage());
+                            }
+
+                            MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                                    .setTitle("akashunni")
+                                    .setMimeType("text/plain")
+                                    .setStarred(true)
+                                    .build();
+
+                            // create a file in root folder
+                            Drive.DriveApi.getRootFolder(googleApiClient)
+                                    .createFile(googleApiClient, changeSet, driveContents)
+                                    .setResultCallback(new ResultCallback<DriveFolder.DriveFileResult>() {
+                                        @Override
+                                        public void onResult(@NonNull DriveFolder.DriveFileResult driveFileResult) {
+                                            if (driveFileResult.getStatus().isSuccess()){
+                                                Log.d(TAG, "File Creation SUCCESS.");
+                                            }else {
+                                                Log.d(TAG, "File creation FAILED.");
+                                            }
+                                        }
+                                    });
+                        }else {
+                            Log.d(TAG, "new drive contents FAILED.");
+                        }
+                    }
+                });
     }
 
 }
