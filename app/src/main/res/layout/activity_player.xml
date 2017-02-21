@@ -108,7 +108,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxHeight="2dp"
-        android:thumbTint="@color/colorPrimary"
+        android:thumbTint="@color/pureWhite"
+        android:progressDrawable="@drawable/seekbar"
         android:layout_marginBottom="10dp"
         android:layout_above="@id/player_song_title" />
 

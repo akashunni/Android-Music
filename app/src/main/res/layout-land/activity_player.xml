@@ -85,7 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/player_album_art"
         android:maxHeight="2dp"
-        android:thumbTint="@color/colorPrimary"
+        android:thumbTint="@color/pureWhite"
+        android:progressDrawable="@drawable/seekbar"
         android:layout_marginBottom="15dp"
         android:layout_above="@id/player_linear_layout" />
 
