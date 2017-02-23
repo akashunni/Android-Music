@@ -1,7 +1,9 @@
 package com.quintlr.music;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 
 /**
@@ -57,7 +59,7 @@ public class Song {
 
     Bitmap getSongAlbumArtAsBitmap(){
         if(getSongAlbumArt() == null){
-            return null;
+            return BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.loading);
         }else {
             return BitmapFactory.decodeByteArray(getSongAlbumArt(), 0, getSongAlbumArt().length);
         }

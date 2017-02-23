@@ -136,6 +136,14 @@
         android:text="00:00"
         />
 
+    <!--android.support.v4.view.ViewPager
+        android:id="@+id/player_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/player_time_total"
+        android:layout_alignParentTop="true"
+        android:transitionName="Transition"/-->
+
     <com.quintlr.music.SquareImageView
         android:id="@+id/player_album_art"
         android:src="@drawable/loading"
@@ -145,6 +153,7 @@
         android:transitionName="Transition"
         android:layout_alignParentTop="true"
         android:layout_above="@id/player_time_total"/>
+
 
 
 </RelativeLayout>

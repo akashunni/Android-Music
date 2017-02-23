@@ -58,7 +58,7 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
 
     @Override
     public void playOrPause() {
-        // only miniplayer & player activity can change paused value.
+        // only miniplayer, player and songItem-Onclick can change paused value.
         if(mediaPlayer.isPlaying()){
             if (paused){
                 mediaPlayer.pause();
@@ -66,6 +66,7 @@ public class SongControl implements SongControlInterface, MediaPlayer.OnErrorLis
         }else if (!mediaPlayer.isPlaying()){
             if (!paused){
                 mediaPlayer.start();
+                MainActivity.createNotification();
             }
         }
     }

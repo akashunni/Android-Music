@@ -2,11 +2,15 @@ package com.quintlr.music;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +28,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -38,6 +43,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.quintlr.music.Services.NotificationService;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener{
@@ -306,6 +312,31 @@ public class MainActivity extends AppCompatActivity implements
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_sync_btn).setVisibility(View.GONE);
             navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setVisibility(View.VISIBLE);
         }
+    }
+
+    //Creates notification -- called from songControl
+    public static void createNotification() {
+        Intent intent = new Intent(context, PlayerActivity.class);
+        int requestID = (int) System.currentTimeMillis();
+        int flags = PendingIntent.FLAG_CANCEL_CURRENT;
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, requestID, intent, flags);
+        Notification builder = new NotificationCompat.Builder(context)
+                //appears on status bar also
+                .setSmallIcon(R.drawable.play_arrow_white_24dp)
+                .setLargeIcon(PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap())
+                .setContentTitle(PlayQueue.getCurrentSong().getSongTitle())
+                .setContentText(PlayQueue.getCurrentSong().getSongArtist())
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false)
+                .build();
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(999, builder);
+
+        // triggers the notification service which handles clearing the notifications on app killing.
+        context.startService(new Intent(context, NotificationService.class));
     }
 
     public void checkAndGetPermissions() {

@@ -1,5 +1,6 @@
 package com.quintlr.music;
 
+import android.content.IntentSender;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -8,10 +9,16 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
+import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DrivePreferencesApi;
 import com.google.android.gms.drive.FileUploadPreferences;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.events.DriveEventService;
+import com.google.android.gms.drive.metadata.internal.MetadataBundle;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -50,7 +57,8 @@ public class SyncDriveSongs {
         this.DRIVE_FOLDER_NAME = DRIVE_FOLDER_NAME;
         this.songArrayList = songArrayList;
         this.googleApiClient = googleApiClient;
-        createFolder();
+        uploadSongs();
+        //createFolder();
     }
 
     private void createFolder(){
@@ -74,39 +82,65 @@ public class SyncDriveSongs {
     }
 
     void uploadSongs(){
+
         Drive.DriveApi.newDriveContents(googleApiClient)
                 .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
                     @Override
                     public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
                         if (driveContentsResult.getStatus().isSuccess()){
-                            Log.d(TAG, "new drive contents OK.");
-                            DriveContents driveContents = driveContentsResult.getDriveContents();
-                            OutputStream outputStream = driveContents.getOutputStream();
 
-                            Writer writer = new OutputStreamWriter(outputStream);
+                        }else {
+                            Log.d(TAG, "new drive contents FAILED.");
+                        }
+                    }
+                });
+
+
+
+
+        /*Drive.DriveApi.newDriveContents(googleApiClient)
+                .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
+                    @Override
+                    public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
+                        if (driveContentsResult.getStatus().isSuccess()){
+                            Log.d(TAG, "new drive contents OK.");
+                            final DriveContents driveContents = driveContentsResult.getDriveContents();
+                            OutputStream outputStream = driveContents.getOutputStream();
+                            File file = new File(songArrayList.get(0).getSongPath());
+                            byte[] byteArray = new byte[1024000];
+                            int off = 0;
                             try {
-                                writer.write("HAHAH");
-                                writer.close();
+                                FileInputStream fileInputStream = new FileInputStream(file);
+                                while (fileInputStream.available() > 0){
+                                    if (fileInputStream.read(byteArray) != -1) {
+                                        if (fileInputStream.available() > 1024000){
+                                            outputStream.write(byteArray, off, 1024000);
+                                        }else {
+                                            outputStream.write(byteArray);
+                                        }
+                                    }
+                                    Log.d(TAG, "onResult: "+fileInputStream.available());
+                                }
+
                             } catch (IOException e) {
-                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
                             }
 
                             MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
                                     .setTitle("akashunni")
-                                    .setMimeType("text/plain")
+                                    .setMimeType("audio/mpeg")
                                     .setStarred(true)
                                     .build();
 
-                            // create a file in root folder
                             Drive.DriveApi.getRootFolder(googleApiClient)
                                     .createFile(googleApiClient, changeSet, driveContents)
                                     .setResultCallback(new ResultCallback<DriveFolder.DriveFileResult>() {
                                         @Override
                                         public void onResult(@NonNull DriveFolder.DriveFileResult driveFileResult) {
                                             if (driveFileResult.getStatus().isSuccess()){
-                                                Log.d(TAG, "File Creation SUCCESS.");
+                                                Log.d(TAG, "OKAY");
                                             }else {
-                                                Log.d(TAG, "File creation FAILED.");
+                                                Log.d(TAG, "FAILED");
                                             }
                                         }
                                     });
@@ -114,7 +148,7 @@ public class SyncDriveSongs {
                             Log.d(TAG, "new drive contents FAILED.");
                         }
                     }
-                });
+                });*/
     }
 
 }

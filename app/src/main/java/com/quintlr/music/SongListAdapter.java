@@ -18,6 +18,7 @@ public class SongListAdapter extends RecyclerView.Adapter{
 
     public class SongViewHolder extends RecyclerView.ViewHolder{
         public TextView songTitle, songArtist;
+
         public SongViewHolder(View itemView) {
             super(itemView);
             songTitle = (TextView) itemView.findViewById(R.id.song_list_song_title);
