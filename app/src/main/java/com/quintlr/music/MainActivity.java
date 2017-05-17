@@ -2,11 +2,15 @@ package com.quintlr.music;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,20 +28,35 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.quintlr.music.Services.NotificationService;
+
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawer;
     static Context context;
     ViewPager viewPager;
     static final int STORAGE_PERMISSION = 1;
+    static String Email;
+    static Uri ImageURI;
+    NavigationView navigationView;
+    int RC_SIGN_IN = 999;
+    String TAG = "akash";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         // nav view options selector listener
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         if (savedInstanceState == null) {
@@ -70,19 +89,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (!PlayQueue.isQueueNULL()) {
                 //this method also includes load_song & seekTo on SongControl.
-                MiniPlayer.setMiniPlayerValues(this, SharedPrefs.getCurrentSongElapsedDuration(this), SharedPrefs.getCurrentSongTotalDuration(this));
+                MiniPlayer.setMiniPlayerValues(this,
+                        SharedPrefs.getCurrentSongElapsedDuration(this),
+                        SharedPrefs.getCurrentSongTotalDuration(this));
             } else {
                 Toast.makeText(context, "No Songs Available :(", Toast.LENGTH_SHORT).show();
             }
 
         }else {
-
             // if the orientation is changed.
+
             loadComponentsAfterRotation();
 
-            //done this because the song will be loaded the other overloaded method (setminiplayervalues)
+            //done this because the song will be loaded in the other overloaded method (setminiplayervalues)
             if (!PlayQueue.isQueueNULL()) {
-                MiniPlayer.setMiniPlayerValues(this);
+                // I DON'T KNOW
+                //MiniPlayer.setMiniPlayerValues(this);
             }
         }
 
@@ -92,13 +114,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tabLayout.setupWithViewPager(viewPager);
         }
 
-        /** this statement is causing the song to reload when resumed after pressing the back button **/
+
+        // GOOGLE Works here..!
+        GoogleAPI.getInstance().createGoogleSignInOptions();
+        GoogleAPI.getInstance().buildGoogleApiClient(getApplicationContext());
+
+        //Google Sign In Button
+        navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(GoogleAPI.getInstance().getGoogleApiClient());
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
+
+        if (SharedPrefs.getSignInStatus(context)){
+            //Auto sign in
+            OptionalPendingResult<GoogleSignInResult> pendingResult =
+                    Auth.GoogleSignInApi.silentSignIn(GoogleAPI.getInstance().getGoogleApiClient());
+
+            if (pendingResult.isDone()) {
+                handleSignInResult(Auth.GoogleSignInApi.silentSignIn(GoogleAPI.getInstance().getGoogleApiClient()).get());
+            }else {
+                pendingResult.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                    @Override
+                    public void onResult(@NonNull GoogleSignInResult result) {
+                        handleSignInResult(result);
+                    }
+                });
+            }
+        }
+
+        navigationView.getHeaderView(0).findViewById(R.id.sign_in_sync_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SyncActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleAPI.getInstance().connect();
     }
 
     // components which require the storage permissions.
     void loadComponents(){
 
-        MyLibTabFragmentAdapter myLibTabFragmentAdapter = new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
+        MyLibTabFragmentAdapter myLibTabFragmentAdapter =
+                new MyLibTabFragmentAdapter(getSupportFragmentManager(), getApplicationContext());
         if (viewPager != null) {
             viewPager.setAdapter(myLibTabFragmentAdapter);
         }
@@ -204,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPause() {
         super.onPause();
+        GoogleAPI.getInstance().disconnect();
     }
 
     @Override
@@ -217,7 +285,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             viewPager.setCurrentItem(data.getIntExtra("TAB_ITEM", 0));
+        }else if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
         }
+    }
+
+    void handleSignInResult(GoogleSignInResult signInResult){
+        Toast.makeText(context, signInResult.isSuccess()+"", Toast.LENGTH_SHORT).show();
+        if (signInResult.isSuccess()){
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_name).setVisibility(View.VISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_image).setVisibility(View.VISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_sync_btn).setVisibility(View.VISIBLE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setVisibility(View.GONE);
+            TextView userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.sign_in_name);
+            userName.setText(signInResult.getSignInAccount().getDisplayName());
+            Glide.with(context)
+                    .load(signInResult.getSignInAccount().getPhotoUrl())
+                    .into((ImageView) navigationView.getHeaderView(0).findViewById(R.id.sign_in_image));
+            Email = signInResult.getSignInAccount().getEmail();
+            ImageURI = signInResult.getSignInAccount().getPhotoUrl();
+            SharedPrefs.setSignInStatus(context, true);
+        }else {
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_name).setVisibility(View.GONE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_image).setVisibility(View.GONE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_sync_btn).setVisibility(View.GONE);
+            navigationView.getHeaderView(0).findViewById(R.id.sign_in_btn).setVisibility(View.VISIBLE);
+        }
+    }
+
+    //Creates notification -- called from songControl
+    public static void createNotification() {
+        Intent intent = new Intent(context, PlayerActivity.class);
+        int requestID = (int) System.currentTimeMillis();
+        int flags = PendingIntent.FLAG_CANCEL_CURRENT;
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, requestID, intent, flags);
+        Notification builder = new NotificationCompat.Builder(context)
+                //appears on status bar also
+                .setSmallIcon(R.drawable.play_arrow_white_24dp)
+                .setLargeIcon(PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap())
+                .setContentTitle(PlayQueue.getCurrentSong().getSongTitle())
+                .setContentText(PlayQueue.getCurrentSong().getSongArtist())
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false)
+                .build();
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(999, builder);
+
+        // triggers the notification service which handles clearing the notifications on app killing.
+        context.startService(new Intent(context, NotificationService.class));
     }
 
     public void checkAndGetPermissions() {
@@ -316,5 +435,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Ex: Orientation
         super.onRestoreInstanceState(savedInstanceState);
     }
-
 }

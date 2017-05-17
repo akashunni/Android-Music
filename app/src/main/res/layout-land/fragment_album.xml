@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:srcCompat="@drawable/ic_shuffle_white_24dp"
+                android:src="@drawable/ic_shuffle_white_24dp"
                 android:clickable="true"
                 android:layout_gravity="right|bottom"
                 />

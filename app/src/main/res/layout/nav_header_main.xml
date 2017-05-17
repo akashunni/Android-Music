@@ -1,18 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
+    android:layout_height="200dp"
     android:background="@color/pitchBlack"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <Button
+    <ImageView
+        android:id="@+id/sign_in_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign In"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"/>
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/sign_in_sync_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Sync"
+        android:visibility="gone"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/sign_in_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textColor="@color/pureWhite"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/sign_in_btn"
+        android:layout_margin="10dp"/>
 
 </RelativeLayout>

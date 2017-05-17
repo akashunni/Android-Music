@@ -13,7 +13,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "679584264126-9nt38rnjq5kem2q7enklrv0mcijjqi1g.apps.googleusercontent.com",
+          "client_id": "679584264126-kchbh72mc3flbgvgaiuplc9aao95400a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.quintlr.music",
@@ -21,13 +21,13 @@
           }
         },
         {
-          "client_id": "679584264126-pcqp11ht886i959egqshmn99br6t3l04.apps.googleusercontent.com",
+          "client_id": "679584264126-9934r8ifoofm4q25jf1r8anubbs6ol7i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBR2T603VmjZJgr6XRJbx6gH4DbZUf2dow"
+          "current_key": "AIzaSyA0Qc9YMJbrfxGiQUS2tdurlr3_rebBI_o"
         }
       ],
       "services": {

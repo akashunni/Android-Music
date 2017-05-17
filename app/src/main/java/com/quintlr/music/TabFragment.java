@@ -73,6 +73,7 @@ public class TabFragment extends android.support.v4.app.Fragment {
                             PlayQueue.setQueueChanged(false);
                             SongControl.getSongControlInstance().setShuffledState(false);
                         }
+                        SongControl.paused = false;
                         SongControl.getSongControlInstance(position).loadSong();
                     }
 
@@ -94,29 +95,21 @@ public class TabFragment extends android.support.v4.app.Fragment {
                 recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.RecyclerClickListener() {
                     @Override
                     public void OnClick(View view, int position) {
-                        /*Intent intent = new Intent(getContext(), AlbumFragment.class);
-                        intent.putExtra("selected_album_id", albumList.get(position).getId());
-                        startActivity(intent);*/
                         Fragment fragment = new AlbumFragment();
                         Bundle bundle = new Bundle();
                         bundle.putLong("selected_album_id", albumList.get(position).getId());
-                        ImageView AlbumArt = (ImageView) view.findViewById(R.id.album_list_album_art);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Transition changeTransform = TransitionInflater.from(getContext()).
-                                    inflateTransition(R.transition.change_image_transform);
                             Transition explodeTransform = TransitionInflater.from(getContext()).
                                     inflateTransition(android.R.transition.explode);
 
                             setExitTransition(explodeTransform);
-                            fragment.setSharedElementEnterTransition(changeTransform);
                             fragment.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_bottom));
 
                             fragment.setArguments(bundle);
                             getFragmentManager()
                                     .beginTransaction()
                                     .add(R.id.drawer_layout, fragment, "album")
-                                    .addSharedElement(AlbumArt, AlbumArt.getTransitionName())
                                     .addToBackStack("BACKSTACK_album")
                                     .commit();
                         }

@@ -2,11 +2,11 @@ package com.quintlr.music;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +26,8 @@ public class MiniPlayer extends android.support.v4.app.Fragment
         implements View.OnTouchListener{
     static ImageView mini_album_art;
     static TextView mini_song_title, mini_song_artist;
-    ImageButton pause_btn, prev_btn, next_btn;
+    ImageButton prev_btn, next_btn;
+    static ImageButton pause_btn;
     static ProgressBar mini_song_progress;
     static Handler progress_handler;
 
@@ -60,6 +61,13 @@ public class MiniPlayer extends android.support.v4.app.Fragment
         pause_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SongControl.getSongControlInstance().isPlaying()){
+                    SongControl.paused = true;
+                    pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+                }else {
+                    SongControl.paused = false;
+                    pause_btn.setImageResource(R.drawable.pause_white_24dp);
+                }
                 SongControl.getSongControlInstance().playOrPause();
                 if (SongControl.getSongControlInstance().isPlaying()){
                     progress_handler.removeCallbacks(progessbarThread);
@@ -94,6 +102,12 @@ public class MiniPlayer extends android.support.v4.app.Fragment
             Glide.with(context)
                     .load(PlayQueue.getCurrentSong().getSongAlbumArt())
                     .into(mini_album_art);
+            //checking paused value since, isplaying() is false when a new song is loaded.
+            if (SongControl.paused){
+                pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+            }else {
+                pause_btn.setImageResource(R.drawable.pause_white_24dp);
+            }
             mini_song_title.setText(PlayQueue.getCurrentSong().getSongTitle());
             mini_song_artist.setText(PlayQueue.getCurrentSong().getSongArtist());
             progress_handler.removeCallbacks(progessbarThread);

@@ -1,6 +1,7 @@
 package com.quintlr.music;
 
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +21,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -83,6 +83,7 @@ public class AlbumFragment extends android.support.v4.app.Fragment
             public void OnClick(View view, int position) {
                 PlayQueue.deletePlayQueue();
                 PlayQueue.createQueue(Fetcher.getSongsFromAlbumID(getContext(), albumId));
+                SongControl.paused = false;
                 SongControl.getSongControlInstance(position).loadSong();
             }
 
@@ -119,12 +120,15 @@ public class AlbumFragment extends android.support.v4.app.Fragment
 
         actionBarDrawerToggle.syncState();
 
-        Palette palette = new Palette.Builder(BitmapFactory.decodeFile(Fetcher.getAlbumArtFromAlbumID(getContext(), albumId))).generate();
-        int col = palette.getDarkMutedColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        collapsingToolbarLayout.setBackgroundColor(col);
-        collapsingToolbarLayout.setStatusBarScrimColor(col);
-        collapsingToolbarLayout.setContentScrimColor(col);
-        fab_album_shuffle.setBackgroundTintList(ColorStateList.valueOf(col));
+        Bitmap bitmap = BitmapFactory.decodeFile(Fetcher.getAlbumArtFromAlbumID(getContext(), albumId));
+        if (bitmap != null){
+            Palette palette = new Palette.Builder(bitmap).generate();
+            int col = palette.getDarkMutedColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            collapsingToolbarLayout.setBackgroundColor(col);
+            collapsingToolbarLayout.setStatusBarScrimColor(col);
+            collapsingToolbarLayout.setContentScrimColor(col);
+            fab_album_shuffle.setBackgroundTintList(ColorStateList.valueOf(col));
+        }
 
         fab_album_shuffle.setOnClickListener(new View.OnClickListener() {
             @Override

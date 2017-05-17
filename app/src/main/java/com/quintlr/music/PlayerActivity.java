@@ -14,9 +14,8 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +37,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
     static Handler seekbar_handler;
     TextView songTitle, songAlbum, songArtist, totalTime, elapsedTime;
     GestureDetectorCompat gestureDetectorCompat;
+    /*ViewPager viewPager;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         setContentView(R.layout.activity_player);
         seekBar = (SeekBar) findViewById(R.id.player_seekbar);
         blur_back = (ImageView) findViewById(R.id.player_blur_album_art);
+        /*viewPager = (ViewPager) findViewById(R.id.player_viewpager);*/
         album_art = (ImageView) findViewById(R.id.player_album_art);
         songTitle = (TextView) findViewById(R.id.player_song_title);
         songAlbum = (TextView) findViewById(R.id.player_album_title);
@@ -103,6 +104,13 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         play_pause_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SongControl.getSongControlInstance().isPlaying()){
+                    SongControl.paused = true;
+                    play_pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+                }else {
+                    SongControl.paused = false;
+                    play_pause_btn.setImageResource(R.drawable.pause_white_24dp);
+                }
                 SongControl.getSongControlInstance().playOrPause();
                 if (SongControl.getSongControlInstance().isPlaying()){
                     seekBar.removeCallbacks(seekbarThread);
@@ -124,8 +132,11 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
         });
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), this);
-    }
 
+        /*AlbumArtSwiper albumArtSwiper = new AlbumArtSwiper(getApplicationContext());
+        viewPager.setAdapter(albumArtSwiper);*/
+
+    }
 
     void setPlayerValues(){
         if (!PlayQueue.isQueueNULL()){
@@ -140,6 +151,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
             Glide.with(this)
                     .load(PlayQueue.getCurrentSong().getSongAlbumArt())
                     .into(album_art);
+            /*viewPager.setCurrentItem(PlayQueue.index);*/
 
             blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
             if(blur_album_art!=null){
@@ -176,6 +188,7 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
             Glide.with(this)
                     .load(PlayQueue.getCurrentSong().getSongAlbumArt())
                     .into(album_art);
+            /*viewPager.setCurrentItem(PlayQueue.index);*/
 
             blur_album_art = PlayQueue.getCurrentSong().getSongAlbumArtAsBitmap();
             if(blur_album_art!=null){
@@ -212,13 +225,15 @@ public class PlayerActivity extends AppCompatActivity implements GestureDetector
     };
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Did this here because miniplayer was not updating the play_pause btn after the song was played/paused
+        // from this activity.
+        if (SongControl.getSongControlInstance().isPlaying()){
+            MiniPlayer.pause_btn.setImageResource(R.drawable.pause_white_24dp);
+        }else {
+            MiniPlayer.pause_btn.setImageResource(R.drawable.play_arrow_white_24dp);
+        }
     }
 
     /** This is not my code. Although I modified it :) */
